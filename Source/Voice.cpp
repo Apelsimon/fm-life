@@ -5,7 +5,7 @@
 namespace jos
 {
 
-Voice::Voice() : playNote(false), processorChain(), heapBlock(), tempBlock()
+Voice::Voice() : processorChain(), heapBlock(), tempBlock()
 {
 	auto& osc = processorChain.get<OscIndex>();
 	osc.initialise([](float input) { return std::sin(input); }, 128);
@@ -30,18 +30,30 @@ void Voice::startNote(int midiNoteNumber, float velocity,
 	auto& osc = processorChain.get<OscIndex>();
 	osc.setFrequency(freq, true);
 
-	playNote = true;
+	auto& adsr = processorChain.get<EnvIndex>();
+	adsr.noteOn();
 }
 
 void Voice::stopNote(float velocity, bool allowTailOff)
 {
-	clearCurrentNote();
-	playNote = false;
+	auto& adsr = processorChain.get<EnvIndex>();
+
+	if (allowTailOff)
+	{
+		adsr.noteOff();
+	}
+	else
+	{
+		clearCurrentNote();
+		adsr.reset();
+	}
 }
 
 void Voice::renderNextBlock(juce::AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
 {
-	if (playNote)
+	auto& adsr = processorChain.get<EnvIndex>();
+
+	if (adsr.isActive())
 	{
 		auto block = tempBlock.getSubBlock(0, (size_t)numSamples);
 		block.clear();
@@ -51,6 +63,8 @@ void Voice::renderNextBlock(juce::AudioSampleBuffer& outputBuffer, int startSamp
 		juce::dsp::AudioBlock<float>(outputBuffer)
 			.getSubBlock((size_t)startSample, (size_t)numSamples)
 			.add(tempBlock);
+		
+		if (!adsr.isActive()) stopNote(0.f, false);
 	}
 }
 

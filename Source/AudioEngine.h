@@ -13,7 +13,7 @@ public:
 	void prepare(const juce::dsp::ProcessSpec& spec) noexcept;
 
 private:
-	static constexpr auto MaxNumVoices = 4;
+	static constexpr auto MaxNumVoices = 10;
 };
 
 }
