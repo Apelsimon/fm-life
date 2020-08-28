@@ -5,16 +5,16 @@
 namespace jos
 {
 
-Voice::Voice() : processorChain(), heapBlock(), tempBlock()
+	Voice::Voice() : op1([this]() { stopNote(0.f, false); }), op2([this]() { stopNote(0.f, false); })
 {
-	auto& osc = processorChain.get<OscIndex>();
-	osc.initialise([](float input) { return std::sin(input); }, 128);
+		op1.setRatio(1.f);
+		op2.setRatio(0.2f);
 }
 
 void Voice::prepare(const juce::dsp::ProcessSpec& spec)
 {
-	tempBlock = juce::dsp::AudioBlock<float>{ heapBlock, spec.numChannels, spec.maximumBlockSize };
-	processorChain.prepare(spec);
+	op1.prepare(spec);
+	op2.prepare(spec);
 }
 
 bool Voice::canPlaySound(juce::SynthesiserSound* sound)
@@ -27,45 +27,47 @@ void Voice::startNote(int midiNoteNumber, float velocity,
 {
 	auto freq = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
 
-	auto& osc = processorChain.get<OscIndex>();
-	osc.setFrequency(freq, true);
-
-	auto& adsr = processorChain.get<EnvIndex>();
-	adsr.noteOn();
+	op1.setFrequency(freq);
+	op2.setFrequency(freq);
+	op1.start();
+	op2.start();
+	
+	DBG("START NOTE");
 }
 
 void Voice::stopNote(float velocity, bool allowTailOff)
 {
-	auto& adsr = processorChain.get<EnvIndex>();
-
 	if (allowTailOff)
 	{
-		adsr.noteOff();
+		op1.stop();
+		op2.stop();
+		DBG("TAIL OFF");
 	}
 	else
 	{
 		clearCurrentNote();
-		adsr.reset();
+		op1.reset();
+		op2.reset();
+		DBG("STOP");
 	}
 }
 
 void Voice::renderNextBlock(juce::AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
 {
-	auto& adsr = processorChain.get<EnvIndex>();
+	auto numChannels = outputBuffer.getNumChannels();
 
-	if (adsr.isActive())
+	for (auto sample = startSample; sample < (startSample + numSamples); ++sample)
 	{
-		auto block = tempBlock.getSubBlock(0, (size_t)numSamples);
-		block.clear();
-		juce::dsp::ProcessContextReplacing<float> context(block);
-		processorChain.process(context);
+		auto out2 = op2.processSample();
+		op1.setPhaseMod(out2);
+		auto out = op1.processSample();
 
-		juce::dsp::AudioBlock<float>(outputBuffer)
-			.getSubBlock((size_t)startSample, (size_t)numSamples)
-			.add(tempBlock);
-		
-		if (!adsr.isActive()) stopNote(0.f, false);
+		for (auto channel = 0; channel < numChannels; ++channel)
+		{
+			outputBuffer.getWritePointer(channel)[sample] += out;
+		}
 	}
+	
 }
 
 }

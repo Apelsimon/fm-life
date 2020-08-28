@@ -18,6 +18,8 @@
       <FILE id="Lp502a" name="Sound.h" compile="0" resource="0" file="Source/Sound.h"/>
       <FILE id="A4kLbz" name="Voice.cpp" compile="1" resource="0" file="Source/Voice.cpp"/>
       <FILE id="xZQ8Zp" name="Voice.h" compile="0" resource="0" file="Source/Voice.h"/>
+      <FILE id="Ekx7Pb" name="Operator.cpp" compile="1" resource="0" file="Source/Operator.cpp"/>
+      <FILE id="cMnSQs" name="Operator.h" compile="0" resource="0" file="Source/Operator.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

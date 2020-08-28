@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 
+#include "Operator.h"
 
 namespace jos
 {
@@ -22,42 +23,8 @@ public:
 	void renderNextBlock(juce::AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override;
 
 private:
-	enum
-	{
-		OscIndex,
-		EnvIndex
-	};
-
-	struct Envelope : public juce::ADSR
-	{
-		//==============================================================================
-
-		void process(const juce::dsp::ProcessContextReplacing<float>& context) noexcept
-		{
-			auto&& outBlock = context.getOutputBlock();
-
-			auto numSamples = outBlock.getNumSamples();
-			auto numChannels = outBlock.getNumChannels();
-
-			for (auto sample = 0; sample < numSamples; ++sample)
-			{
-				auto env = getNextSample();
-
-				for (auto channel = 0; channel < numChannels; ++channel)
-					outBlock.getChannelPointer(channel)[sample] *= env;
-			}
-		}
-
-		//==============================================================================
-		void prepare(const juce::dsp::ProcessSpec& spec)
-		{
-			setSampleRate(spec.sampleRate);
-		}
-	};
-
-	juce::dsp::ProcessorChain<juce::dsp::Oscillator<float>, Envelope> processorChain;
-	juce::HeapBlock<char> heapBlock;
-	juce::dsp::AudioBlock<float> tempBlock;
+	jos::Operator op1;
+	jos::Operator op2;
 };
 
 }
