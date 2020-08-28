@@ -7,12 +7,15 @@
 namespace jos
 {
 
+class ParameterListener;
+
 class Voice : public juce::SynthesiserVoice
 {
 public:
 	Voice();
 
-	void prepare(const juce::dsp::ProcessSpec& spec);
+	void prepare(const juce::dsp::ProcessSpec& spec, juce::AudioProcessorValueTreeState& parameters);
+	void registerParameterCallbacks(jos::ParameterListener& paramListener);
 
 	bool canPlaySound(juce::SynthesiserSound* sound) override;
 	void startNote(int midiNoteNumber, float velocity,
@@ -23,8 +26,11 @@ public:
 	void renderNextBlock(juce::AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override;
 
 private:
+	std::function<void()> stopNoteCb;
 	jos::Operator op1;
 	jos::Operator op2;
+	jos::Operator op3;
+	jos::Operator op4;
 };
 
 }

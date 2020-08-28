@@ -20,6 +20,18 @@
       <FILE id="xZQ8Zp" name="Voice.h" compile="0" resource="0" file="Source/Voice.h"/>
       <FILE id="Ekx7Pb" name="Operator.cpp" compile="1" resource="0" file="Source/Operator.cpp"/>
       <FILE id="cMnSQs" name="Operator.h" compile="0" resource="0" file="Source/Operator.h"/>
+      <FILE id="BeRB6o" name="ParameterConfig.h" compile="0" resource="0"
+            file="Source/ParameterConfig.h"/>
+      <FILE id="NXEUpi" name="OperatorComponent.h" compile="0" resource="0"
+            file="Source/OperatorComponent.h"/>
+      <FILE id="k0UX6m" name="OperatorComponent.cpp" compile="1" resource="0"
+            file="Source/OperatorComponent.cpp"/>
+      <FILE id="Gy1D1p" name="ParameterListener.cpp" compile="1" resource="0"
+            file="Source/ParameterListener.cpp"/>
+      <FILE id="vKmrKj" name="ParameterListener.h" compile="0" resource="0"
+            file="Source/ParameterListener.h"/>
+      <FILE id="I2nzQC" name="ComponentAttachment.h" compile="0" resource="0"
+            file="Source/ComponentAttachment.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

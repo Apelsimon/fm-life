@@ -9,6 +9,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+
+#include "OperatorComponent.h"
 #include "PluginProcessor.h"
 
 //==============================================================================
@@ -17,7 +19,7 @@
 class FmlifeAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
-    FmlifeAudioProcessorEditor (FmlifeAudioProcessor&);
+    FmlifeAudioProcessorEditor (FmlifeAudioProcessor&, juce::AudioProcessorValueTreeState&);
     ~FmlifeAudioProcessorEditor() override;
 
     //==============================================================================
@@ -28,6 +30,12 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     FmlifeAudioProcessor& audioProcessor;
+	juce::AudioProcessorValueTreeState& parameters;
+
+	OperatorComponent operatorComponent1;
+	OperatorComponent operatorComponent2;
+	OperatorComponent operatorComponent3;
+	OperatorComponent operatorComponent4;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FmlifeAudioProcessorEditor)
 };

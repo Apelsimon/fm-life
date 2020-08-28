@@ -20,7 +20,7 @@ namespace jos
 		void start();
 		void stop();
 		void reset();
-		void setRatio(float r) { ratio = r; }
+		void setRatio(float r) { ratio = r; setFrequency(carrierFrequency); }
 		float getRatio() const { return ratio; }
 
 	private:
@@ -58,6 +58,7 @@ namespace jos
 			}
 		};
 
+		float carrierFrequency;
 		float phaseMod;
 		float ratio;
 		juce::dsp::ProcessorChain<juce::dsp::Oscillator<float>, Envelope> processorChain;

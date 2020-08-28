@@ -7,6 +7,8 @@
 */
 
 #include "PluginProcessor.h"
+
+#include "ParameterConfig.h"
 #include "PluginEditor.h"
 
 //==============================================================================
@@ -21,9 +23,12 @@ FmlifeAudioProcessor::FmlifeAudioProcessor()
                      #endif
                        ),
 #endif
+	parameters(*this, nullptr, "FmLifeParameters", createParameterLayout()),
+	parameterListener(parameters),
 	audioEngine(),
 	midiMiessageCollector()
 {
+	audioEngine.registerParameterCallbacks(parameterListener);
 }
 
 FmlifeAudioProcessor::~FmlifeAudioProcessor()
@@ -98,7 +103,7 @@ void FmlifeAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 	juce::dsp::ProcessSpec spec{ sampleRate, (juce::uint32) samplesPerBlock, 2};
-	audioEngine.prepare(spec);
+	audioEngine.prepare(spec, parameters);
 	midiMiessageCollector.reset(sampleRate);
 }
 
@@ -155,7 +160,7 @@ bool FmlifeAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* FmlifeAudioProcessor::createEditor()
 {
-    return new FmlifeAudioProcessorEditor (*this);
+    return new FmlifeAudioProcessorEditor (*this, parameters);
 }
 
 //==============================================================================
@@ -170,6 +175,17 @@ void FmlifeAudioProcessor::setStateInformation (const void* data, int sizeInByte
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+
+juce::AudioProcessorValueTreeState::ParameterLayout FmlifeAudioProcessor::createParameterLayout() const
+{
+	return {
+		std::make_unique<juce::AudioParameterFloat>(ParameterConfig::Id::OperatorRatio1, "Op1Ratio", 0.f, 10.f, 1.f),
+		std::make_unique<juce::AudioParameterFloat>(ParameterConfig::Id::OperatorRatio2, "Op2Ratio", 0.f, 10.f, 1.f),
+		std::make_unique<juce::AudioParameterFloat>(ParameterConfig::Id::OperatorRatio3, "Op3Ratio", 0.f, 10.f, 1.f),
+		std::make_unique<juce::AudioParameterFloat>(ParameterConfig::Id::OperatorRatio4, "Op4Ratio", 0.f, 10.f, 1.f),
+	};
 }
 
 //==============================================================================

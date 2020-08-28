@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 
 #include "AudioEngine.h"
+#include "ParameterListener.h"
 
 //==============================================================================
 /**
@@ -57,6 +58,10 @@ public:
 
 private:
 
+	juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout() const;
+
+	juce::AudioProcessorValueTreeState parameters;
+	jos::ParameterListener parameterListener;
 	jos::AudioEngine audioEngine;
 	juce::MidiMessageCollector midiMiessageCollector;
 

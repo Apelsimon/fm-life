@@ -3,7 +3,7 @@
 namespace jos
 {
 
-Operator::Operator(std::function<void()> envelopeDoneCb) : phaseMod(0.f), ratio(0.f), processorChain(), heapBlock(), tempBlock(), onInactiveEnvelope(envelopeDoneCb)
+Operator::Operator(std::function<void()> envelopeDoneCb) : carrierFrequency(0.f), phaseMod(0.f), ratio(0.f), processorChain(), heapBlock(), tempBlock(), onInactiveEnvelope(envelopeDoneCb)
 {
 	auto& osc = processorChain.get<OscIndex>();
 	osc.initialise([this](float input) { return std::sin(input + 4.f * phaseMod); });
@@ -54,7 +54,8 @@ float Operator::processSample()
 void Operator::setFrequency(float freq)
 {
 	auto& osc = processorChain.get<OscIndex>();
-	osc.setFrequency(freq * ratio, true);
+	carrierFrequency = freq;
+	osc.setFrequency(carrierFrequency * ratio, true);
 }
 
 void Operator::start()
