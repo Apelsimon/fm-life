@@ -185,6 +185,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout FmlifeAudioProcessor::create
 		std::make_unique<juce::AudioParameterFloat>(ParameterConfig::Id::OperatorRatio2, "Op2Ratio", 0.f, 10.f, 1.f),
 		std::make_unique<juce::AudioParameterFloat>(ParameterConfig::Id::OperatorRatio3, "Op3Ratio", 0.f, 10.f, 1.f),
 		std::make_unique<juce::AudioParameterFloat>(ParameterConfig::Id::OperatorRatio4, "Op4Ratio", 0.f, 10.f, 1.f),
+		std::make_unique<juce::AudioParameterChoice>(ParameterConfig::Id::AlgorithmChoices, "AlgorithmChoices", ParameterConfig::Values::AlgorithmChoices, 0)
 	};
 }
 

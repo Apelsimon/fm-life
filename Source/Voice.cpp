@@ -7,7 +7,9 @@
 namespace jos
 {
 
-Voice::Voice() : stopNoteCb([this]() { stopNote(0.f, false); }), op1(stopNoteCb), op2(stopNoteCb), op3(stopNoteCb), op4(stopNoteCb)
+Voice::Voice() : stopNoteCb([this]() { stopNote(0.f, false); }), 
+	op1(stopNoteCb), op2(stopNoteCb), op3(stopNoteCb), op4(stopNoteCb),
+	algorithmChoice(I)
 {
 }
 
@@ -22,6 +24,7 @@ void Voice::prepare(const juce::dsp::ProcessSpec& spec, juce::AudioProcessorValu
 	op2.setRatio(*parameters.getRawParameterValue(ParameterConfig::Id::OperatorRatio2));
 	op3.setRatio(*parameters.getRawParameterValue(ParameterConfig::Id::OperatorRatio3));
 	op4.setRatio(*parameters.getRawParameterValue(ParameterConfig::Id::OperatorRatio4));
+	algorithmChoice = static_cast<AlgorithmChoice>(static_cast<int>(*parameters.getRawParameterValue(ParameterConfig::Id::AlgorithmChoices)));
 }
 
 void Voice::registerParameterCallbacks(jos::ParameterListener& paramListener)
@@ -30,6 +33,8 @@ void Voice::registerParameterCallbacks(jos::ParameterListener& paramListener)
 	paramListener.registerCallback(ParameterConfig::Id::OperatorRatio2, [this](float newValue) { op2.setRatio(newValue); });
 	paramListener.registerCallback(ParameterConfig::Id::OperatorRatio3, [this](float newValue) { op3.setRatio(newValue); });
 	paramListener.registerCallback(ParameterConfig::Id::OperatorRatio4, [this](float newValue) { op4.setRatio(newValue); });
+	paramListener.registerCallback(ParameterConfig::Id::AlgorithmChoices, [this](float newValue) { DBG("CHOICE: " << newValue); 
+		algorithmChoice = static_cast<AlgorithmChoice>(static_cast<int>(newValue)); });
 }
 
 bool Voice::canPlaySound(juce::SynthesiserSound* sound)
@@ -81,22 +86,102 @@ void Voice::renderNextBlock(juce::AudioSampleBuffer& outputBuffer, int startSamp
 
 	for (auto sample = startSample; sample < (startSample + numSamples); ++sample)
 	{
-		auto out4 = op4.processSample();
-		op3.setPhaseMod(out4);
-		auto out3 = op3.processSample();
-
-		auto out2 = op2.processSample();
-		op1.setPhaseMod(out2);
-		auto out1 = op1.processSample();
-
-		auto out = 0.5 * (out1 + out3);
+		const auto out = processSample();
 
 		for (auto channel = 0; channel < numChannels; ++channel)
 		{
 			outputBuffer.getWritePointer(channel)[sample] += out;
 		}
+	}	
+}
+
+float Voice::processSample()
+{
+	switch (algorithmChoice)
+	{
+	case I:
+	{
+		auto out4 = op4.processSample();
+		
+		op3.setPhaseMod(out4);
+		auto out3 = op3.processSample();
+
+		op2.setPhaseMod(out3);
+		auto out2 = op2.processSample();
+
+		op1.setPhaseMod(out2);
+		return op1.processSample();
 	}
-	
+	case II:
+	{
+		auto out4 = op4.processSample();
+		auto out3 = op3.processSample();
+
+		op2.setPhaseMod(0.5f * (out3 + out4));
+		auto out2 = op2.processSample();
+
+		op1.setPhaseMod(out2);
+		return op1.processSample();
+	}
+	case III:
+	{
+		auto out4 = op4.processSample();
+
+		auto out3 = op3.processSample();
+
+		op2.setPhaseMod(out3);
+		auto out2 = op2.processSample();
+
+		op1.setPhaseMod(0.5 * (out2 + out4));
+		return op1.processSample();
+	}
+	case IV:
+	{
+		auto out4 = op4.processSample();
+
+		op3.setPhaseMod(out4);
+		auto out3 = op3.processSample();
+
+		auto out2 = op2.processSample();
+
+		op1.setPhaseMod(0.5 * (out2 + out3));
+		return op1.processSample();
+	}
+	case V:
+	{
+		auto out4 = op4.processSample();
+		auto out3 = op3.processSample();
+
+		op2.setPhaseMod(out4);
+		op1.setPhaseMod(out3);
+
+		return 0.5 * (op1.processSample() + op2.processSample());
+	}
+	case VI:
+	{
+		auto out4 = op4.processSample();
+
+		op3.setPhaseMod(out4);
+		op2.setPhaseMod(out4);
+		op1.setPhaseMod(out4);
+
+		return (op1.processSample() + op2.processSample() + op3.processSample()) / 3.f;
+	}
+	case VII:
+	{
+		auto out4 = op4.processSample();
+
+		op3.setPhaseMod(out4);
+
+		return (op1.processSample() + op2.processSample() + op3.processSample()) / 3.f;
+	}
+	case VIII:
+	{
+		return (op1.processSample() + op2.processSample() + op3.processSample() + op4.processSample()) / 4.f;
+	}
+	default:
+		return 0.f;
+	}
 }
 
 }

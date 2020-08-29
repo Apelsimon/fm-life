@@ -13,7 +13,9 @@
 
 //==============================================================================
 FmlifeAudioProcessorEditor::FmlifeAudioProcessorEditor (FmlifeAudioProcessor& p, juce::AudioProcessorValueTreeState& parameters)
-    : AudioProcessorEditor (&p), audioProcessor (p), parameters(parameters), operatorComponent1(parameters, ParameterConfig::Id::OperatorRatio1), 
+    : AudioProcessorEditor (&p), audioProcessor (p), parameters(parameters), 
+	algorithmComponent(parameters),
+	operatorComponent1(parameters, ParameterConfig::Id::OperatorRatio1), 
 	operatorComponent2(parameters, ParameterConfig::Id::OperatorRatio2),
 	operatorComponent3(parameters, ParameterConfig::Id::OperatorRatio3),
 	operatorComponent4(parameters, ParameterConfig::Id::OperatorRatio4)
@@ -21,6 +23,7 @@ FmlifeAudioProcessorEditor::FmlifeAudioProcessorEditor (FmlifeAudioProcessor& p,
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 300);
+	addAndMakeVisible(algorithmComponent);
 	addAndMakeVisible(operatorComponent1);
 	addAndMakeVisible(operatorComponent2);
 	addAndMakeVisible(operatorComponent3);
@@ -43,6 +46,10 @@ void FmlifeAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 	auto bounds = getLocalBounds();
+
+	auto algoritmChoicesBounds = bounds.removeFromTop(bounds.getHeight() * 0.2);
+	algorithmComponent.setBounds(algoritmChoicesBounds);
+
 	auto componentHeight = bounds.getHeight() / 4.f;
 	operatorComponent1.setBounds(bounds.removeFromTop(componentHeight));
 	operatorComponent2.setBounds(bounds.removeFromTop(componentHeight));

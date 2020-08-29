@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 
+#include "AlgorithmComponent.h"
 #include "OperatorComponent.h"
 #include "PluginProcessor.h"
 
@@ -32,6 +33,7 @@ private:
     FmlifeAudioProcessor& audioProcessor;
 	juce::AudioProcessorValueTreeState& parameters;
 
+	AlgorithmComponent algorithmComponent;
 	OperatorComponent operatorComponent1;
 	OperatorComponent operatorComponent2;
 	OperatorComponent operatorComponent3;

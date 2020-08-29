@@ -30,6 +30,10 @@
             file="Source/ParameterListener.cpp"/>
       <FILE id="vKmrKj" name="ParameterListener.h" compile="0" resource="0"
             file="Source/ParameterListener.h"/>
+      <FILE id="eNlbNl" name="AlgorithmComponent.cpp" compile="1" resource="0"
+            file="Source/AlgorithmComponent.cpp"/>
+      <FILE id="JkQyCD" name="AlgorithmComponent.h" compile="0" resource="0"
+            file="Source/AlgorithmComponent.h"/>
       <FILE id="I2nzQC" name="ComponentAttachment.h" compile="0" resource="0"
             file="Source/ComponentAttachment.h"/>
     </GROUP>

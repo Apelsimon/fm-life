@@ -26,11 +26,27 @@ public:
 	void renderNextBlock(juce::AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override;
 
 private:
+
+	enum AlgorithmChoice
+	{
+		I = 0,
+		II,
+		III,
+		IV,
+		V,
+		VI,
+		VII,
+		VIII
+	};
+
+	float processSample();
+
 	std::function<void()> stopNoteCb;
 	jos::Operator op1;
 	jos::Operator op2;
 	jos::Operator op3;
 	jos::Operator op4;
+	AlgorithmChoice algorithmChoice;
 };
 
 }
