@@ -12,11 +12,18 @@
 #include "OperatorComponent.h"
 
 //==============================================================================
-OperatorComponent::OperatorComponent(juce::AudioProcessorValueTreeState& parameters, const juce::String& ratioParamId) : ratioAttachment(parameters, ratioParamId)
+OperatorComponent::OperatorComponent(juce::AudioProcessorValueTreeState& parameters, const ParameterConfig::Id::OperatorParamIds& paramIds) :
+	ratioAttachment(parameters, paramIds.ratioId),
+	attackAttachment(parameters, paramIds.attckId),
+    decayAttachment(parameters, paramIds.decayId),
+	sustainAttachment(parameters, paramIds.sustainId),
+	releaseAttachment(parameters, paramIds.releaseId)
 {
-	addAndMakeVisible(ratioAttachment());
-	ratioAttachment().setTextValueSuffix(" ratio");
-	ratioAttachment().setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+	initAndPublishSlider(ratioAttachment(), " ratio");
+	initAndPublishSlider(attackAttachment(), " attack");
+	initAndPublishSlider(decayAttachment(), " decay");
+	initAndPublishSlider(sustainAttachment(), " sustain");
+	initAndPublishSlider(releaseAttachment(), " release");
 }
 
 OperatorComponent::~OperatorComponent()
@@ -31,5 +38,18 @@ void OperatorComponent::paint (juce::Graphics& g)
 void OperatorComponent::resized()
 {
 	auto bounds = getLocalBounds();
-	ratioAttachment().setBounds(bounds);
+	auto sliderWidth = bounds.getWidth() / 5.f;
+
+	ratioAttachment().setBounds(bounds.removeFromLeft(sliderWidth));
+	attackAttachment().setBounds(bounds.removeFromLeft(sliderWidth));
+	decayAttachment().setBounds(bounds.removeFromLeft(sliderWidth));
+	sustainAttachment().setBounds(bounds.removeFromLeft(sliderWidth));
+	releaseAttachment().setBounds(bounds.removeFromLeft(sliderWidth));
+}
+
+void OperatorComponent::initAndPublishSlider(juce::Slider& slider, const juce::String& suffix)
+{
+	addAndMakeVisible(slider);
+	slider.setTextValueSuffix(suffix);
+	slider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
 }

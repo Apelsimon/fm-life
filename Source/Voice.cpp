@@ -1,6 +1,5 @@
 #include "Voice.h"
 
-#include "ParameterConfig.h"
 #include "ParameterListener.h"
 #include "Sound.h"
 
@@ -20,19 +19,21 @@ void Voice::prepare(const juce::dsp::ProcessSpec& spec, juce::AudioProcessorValu
 	op3.prepare(spec);
 	op4.prepare(spec);
 
-	op1.setRatio(*parameters.getRawParameterValue(ParameterConfig::Id::OperatorRatio1));
-	op2.setRatio(*parameters.getRawParameterValue(ParameterConfig::Id::OperatorRatio2));
-	op3.setRatio(*parameters.getRawParameterValue(ParameterConfig::Id::OperatorRatio3));
-	op4.setRatio(*parameters.getRawParameterValue(ParameterConfig::Id::OperatorRatio4));
+	initOperatorParameters(op1, parameters, ParameterConfig::Id::Operator1);
+	initOperatorParameters(op2, parameters, ParameterConfig::Id::Operator2);
+	initOperatorParameters(op3, parameters, ParameterConfig::Id::Operator3);
+	initOperatorParameters(op4, parameters, ParameterConfig::Id::Operator4);
+
 	algorithmChoice = static_cast<AlgorithmChoice>(static_cast<int>(*parameters.getRawParameterValue(ParameterConfig::Id::AlgorithmChoices)));
 }
 
 void Voice::registerParameterCallbacks(jos::ParameterListener& paramListener)
 {
-	paramListener.registerCallback(ParameterConfig::Id::OperatorRatio1, [this](float newValue) { op1.setRatio(newValue); });
-	paramListener.registerCallback(ParameterConfig::Id::OperatorRatio2, [this](float newValue) { op2.setRatio(newValue); });
-	paramListener.registerCallback(ParameterConfig::Id::OperatorRatio3, [this](float newValue) { op3.setRatio(newValue); });
-	paramListener.registerCallback(ParameterConfig::Id::OperatorRatio4, [this](float newValue) { op4.setRatio(newValue); });
+	registerOperatorCallbacks(paramListener, ParameterConfig::Id::Operator1, op1);
+	registerOperatorCallbacks(paramListener, ParameterConfig::Id::Operator2, op2);
+	registerOperatorCallbacks(paramListener, ParameterConfig::Id::Operator3, op3);
+	registerOperatorCallbacks(paramListener, ParameterConfig::Id::Operator4, op4);
+
 	paramListener.registerCallback(ParameterConfig::Id::AlgorithmChoices, [this](float newValue) { DBG("CHOICE: " << newValue); 
 		algorithmChoice = static_cast<AlgorithmChoice>(static_cast<int>(newValue)); });
 }
@@ -93,6 +94,24 @@ void Voice::renderNextBlock(juce::AudioSampleBuffer& outputBuffer, int startSamp
 			outputBuffer.getWritePointer(channel)[sample] += out;
 		}
 	}	
+}
+
+void Voice::initOperatorParameters(jos::Operator& op, juce::AudioProcessorValueTreeState& parameters, const ParameterConfig::Id::OperatorParamIds& paramIds)
+{
+	op.setRatio(*parameters.getRawParameterValue(paramIds.ratioId));
+	op.setAttack(*parameters.getRawParameterValue(paramIds.attckId));
+	op.setDecay(*parameters.getRawParameterValue(paramIds.decayId));
+	op.setSustain(*parameters.getRawParameterValue(paramIds.sustainId));
+	op.setRelease(*parameters.getRawParameterValue(paramIds.releaseId));
+}
+
+void Voice::registerOperatorCallbacks(jos::ParameterListener& paramListener, const ParameterConfig::Id::OperatorParamIds& paramIds, jos::Operator& op)
+{
+	paramListener.registerCallback(paramIds.ratioId, [&op](float newValue) { DBG("SET RATIO FOR OP: " << (int)&op);  op.setRatio(newValue); });
+	paramListener.registerCallback(paramIds.attckId, [&op](float newValue) { DBG("SET ATTACK FOR OP: " << (int)&op); op.setAttack(newValue); });
+	paramListener.registerCallback(paramIds.decayId, [&op](float newValue) { DBG("SET DECAY FOR OP: " << (int)&op); op.setDecay(newValue); });
+	paramListener.registerCallback(paramIds.sustainId, [&op](float newValue) { DBG("SET SUSTAIN FOR OP: " << (int)&op); op.setSustain(newValue); });
+	paramListener.registerCallback(paramIds.releaseId, [&op](float newValue) { DBG("SET RELEASE FOR OP: " << (int)&op); op.setRelease(newValue); });
 }
 
 float Voice::processSample()

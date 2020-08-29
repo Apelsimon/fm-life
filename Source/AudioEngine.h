@@ -16,7 +16,7 @@ public:
 	void registerParameterCallbacks(jos::ParameterListener& paramListener);
 
 private:
-	static constexpr auto MaxNumVoices = 10;
+	static constexpr auto MaxNumVoices = 4;
 };
 
 }

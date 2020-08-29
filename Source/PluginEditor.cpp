@@ -15,14 +15,14 @@
 FmlifeAudioProcessorEditor::FmlifeAudioProcessorEditor (FmlifeAudioProcessor& p, juce::AudioProcessorValueTreeState& parameters)
     : AudioProcessorEditor (&p), audioProcessor (p), parameters(parameters), 
 	algorithmComponent(parameters),
-	operatorComponent1(parameters, ParameterConfig::Id::OperatorRatio1), 
-	operatorComponent2(parameters, ParameterConfig::Id::OperatorRatio2),
-	operatorComponent3(parameters, ParameterConfig::Id::OperatorRatio3),
-	operatorComponent4(parameters, ParameterConfig::Id::OperatorRatio4)
+	operatorComponent1(parameters, ParameterConfig::Id::Operator1),
+	operatorComponent2(parameters, ParameterConfig::Id::Operator2),
+	operatorComponent3(parameters, ParameterConfig::Id::Operator3),
+	operatorComponent4(parameters, ParameterConfig::Id::Operator4)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (1200, 600);
 	addAndMakeVisible(algorithmComponent);
 	addAndMakeVisible(operatorComponent1);
 	addAndMakeVisible(operatorComponent2);

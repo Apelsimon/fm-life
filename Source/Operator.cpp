@@ -76,4 +76,49 @@ void Operator::reset()
 	adsr.reset();
 }
 
+void Operator::setEnvelopeParameter(Envelope& envelope, juce::ADSR::Parameters& params, float& paramToChange, float newValue)
+{
+	if (newValue != paramToChange)
+	{
+		paramToChange = newValue;
+		envelope.setParameters(params);
+	}
+}
+
+void Operator::setAttack(float attack)
+{
+	attack = attack / 1000.f;
+
+	auto& adsr = processorChain.get<EnvIndex>();
+	auto params = adsr.getParameters();
+	setEnvelopeParameter(adsr, params, params.attack, attack);
+}
+
+void Operator::setDecay(float decay)
+{
+	decay = decay / 1000.f;
+
+	auto& adsr = processorChain.get<EnvIndex>();
+	auto params = adsr.getParameters();
+	setEnvelopeParameter(adsr, params, params.decay, decay);
+}
+
+void Operator::setSustain(float sustain)
+{
+	sustain = sustain / 1000.f;
+
+	auto& adsr = processorChain.get<EnvIndex>();
+	auto params = adsr.getParameters();
+	setEnvelopeParameter(adsr, params, params.sustain, sustain);
+}
+
+void Operator::setRelease(float release)
+{
+	release = release / 1000.f;
+
+	auto& adsr = processorChain.get<EnvIndex>();
+	auto params = adsr.getParameters();
+	setEnvelopeParameter(adsr, params, params.release, release);
+}
+
 }

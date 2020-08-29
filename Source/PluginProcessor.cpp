@@ -178,15 +178,27 @@ void FmlifeAudioProcessor::setStateInformation (const void* data, int sizeInByte
 }
 
 
+void addFloatParametersToLayout(juce::AudioProcessorValueTreeState::ParameterLayout& parameterLayout, const ParameterConfig::Id::OperatorParamIds& paramIds, const ParameterConfig::Values::OperatorParamValues& paramValues)
+{
+	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.ratioId, "RatioParam", paramValues.ratio.min, paramValues.ratio.max, paramValues.ratio.def));
+	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.attckId, "AttackParam", paramValues.attack.min, paramValues.attack.max, paramValues.attack.def));
+	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.decayId, "DecayParam", paramValues.decay.min, paramValues.decay.max, paramValues.decay.def));
+	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.sustainId, "SustainParam", paramValues.sustain.min, paramValues.sustain.max, paramValues.sustain.def));
+	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.releaseId, "ReleaseParam", paramValues.release.min, paramValues.release.max, paramValues.release.def));
+}
+
 juce::AudioProcessorValueTreeState::ParameterLayout FmlifeAudioProcessor::createParameterLayout() const
 {
-	return {
-		std::make_unique<juce::AudioParameterFloat>(ParameterConfig::Id::OperatorRatio1, "Op1Ratio", 0.f, 10.f, 1.f),
-		std::make_unique<juce::AudioParameterFloat>(ParameterConfig::Id::OperatorRatio2, "Op2Ratio", 0.f, 10.f, 1.f),
-		std::make_unique<juce::AudioParameterFloat>(ParameterConfig::Id::OperatorRatio3, "Op3Ratio", 0.f, 10.f, 1.f),
-		std::make_unique<juce::AudioParameterFloat>(ParameterConfig::Id::OperatorRatio4, "Op4Ratio", 0.f, 10.f, 1.f),
-		std::make_unique<juce::AudioParameterChoice>(ParameterConfig::Id::AlgorithmChoices, "AlgorithmChoices", ParameterConfig::Values::AlgorithmChoices, 0)
-	};
+	juce::AudioProcessorValueTreeState::ParameterLayout parameterLayout;
+	
+	addFloatParametersToLayout(parameterLayout, ParameterConfig::Id::Operator1, ParameterConfig::Values::Operator);
+	addFloatParametersToLayout(parameterLayout, ParameterConfig::Id::Operator2, ParameterConfig::Values::Operator);
+	addFloatParametersToLayout(parameterLayout, ParameterConfig::Id::Operator3, ParameterConfig::Values::Operator);
+	addFloatParametersToLayout(parameterLayout, ParameterConfig::Id::Operator4, ParameterConfig::Values::Operator);
+
+	parameterLayout.add(std::make_unique<juce::AudioParameterChoice>(ParameterConfig::Id::AlgorithmChoices, "AlgorithmChoices", ParameterConfig::Values::AlgorithmChoices, 0));
+
+	return parameterLayout;
 }
 
 //==============================================================================

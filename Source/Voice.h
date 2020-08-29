@@ -3,6 +3,7 @@
 #include <JuceHeader.h>
 
 #include "Operator.h"
+#include "ParameterConfig.h"
 
 namespace jos
 {
@@ -39,6 +40,8 @@ private:
 		VIII
 	};
 
+	void initOperatorParameters(jos::Operator& op, juce::AudioProcessorValueTreeState& parameters, const ParameterConfig::Id::OperatorParamIds& paramIds);
+	void registerOperatorCallbacks(jos::ParameterListener& paramListener, const ParameterConfig::Id::OperatorParamIds& paramIds, jos::Operator& op);
 	float processSample();
 
 	std::function<void()> stopNoteCb;

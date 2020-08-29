@@ -22,6 +22,10 @@ namespace jos
 		void reset();
 		void setRatio(float r) { ratio = r; setFrequency(carrierFrequency); }
 		float getRatio() const { return ratio; }
+		void setAttack(float attack);
+		void setDecay(float decay);
+		void setSustain(float sustain);
+		void setRelease(float release);
 
 	private:
 
@@ -57,6 +61,8 @@ namespace jos
 				setSampleRate(spec.sampleRate);
 			}
 		};
+
+		void setEnvelopeParameter(Envelope& envelope, juce::ADSR::Parameters& params, float& paramToChange, float newValue);
 
 		float carrierFrequency;
 		float phaseMod;
