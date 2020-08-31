@@ -18,6 +18,7 @@ public:
 private:
 	void initAndPublishSlider(juce::Slider& slider, const juce::String& suffix);
 
+	juce::Label operatorLabel;
 	jos::SliderAttachment ratioAttachment;
 	jos::SliderAttachment attackAttachment;
 	jos::SliderAttachment decayAttachment;
