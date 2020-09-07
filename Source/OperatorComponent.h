@@ -24,6 +24,7 @@ private:
 	jos::SliderAttachment decayAttachment;
 	jos::SliderAttachment sustainAttachment;
 	jos::SliderAttachment releaseAttachment;
+	jos::SliderAttachment feedbackAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OperatorComponent)
 };

@@ -8,7 +8,7 @@ namespace jos
 
 Voice::Voice() : stopNoteCb([this]() { stopNote(0.f, false); }), 
 	op1(stopNoteCb), op2(stopNoteCb), op3(stopNoteCb), op4(stopNoteCb),
-	algorithmChoice(I)
+	operator4Feedback(0), algorithmChoice(I)
 {
 }
 
@@ -24,6 +24,8 @@ void Voice::prepare(const juce::dsp::ProcessSpec& spec, juce::AudioProcessorValu
 	initOperatorParameters(op3, parameters, ParameterConfig::Id::Operator3);
 	initOperatorParameters(op4, parameters, ParameterConfig::Id::Operator4);
 
+	operator4Feedback = *parameters.getRawParameterValue(ParameterConfig::Id::Operator4.feedbackId);
+
 	algorithmChoice = static_cast<AlgorithmChoice>(static_cast<int>(*parameters.getRawParameterValue(ParameterConfig::Id::AlgorithmChoices)));
 }
 
@@ -33,6 +35,8 @@ void Voice::registerParameterCallbacks(jos::ParameterListener& paramListener)
 	registerOperatorCallbacks(paramListener, ParameterConfig::Id::Operator2, op2);
 	registerOperatorCallbacks(paramListener, ParameterConfig::Id::Operator3, op3);
 	registerOperatorCallbacks(paramListener, ParameterConfig::Id::Operator4, op4);
+
+	paramListener.registerCallback(ParameterConfig::Id::Operator4.feedbackId, [this](float newValue) { DBG("op 4 feedback: " << newValue); operator4Feedback = newValue; });
 
 	paramListener.registerCallback(ParameterConfig::Id::AlgorithmChoices, [this](float newValue) { DBG("CHOICE: " << newValue); 
 		algorithmChoice = static_cast<AlgorithmChoice>(static_cast<int>(newValue)); });
@@ -121,6 +125,7 @@ float Voice::processSample()
 	case I:
 	{
 		auto out4 = op4.processSample();
+		op4.setPhaseMod(operator4Feedback * out4);
 		
 		op3.setPhaseMod(out4);
 		auto out3 = op3.processSample();
@@ -134,6 +139,7 @@ float Voice::processSample()
 	case II:
 	{
 		auto out4 = op4.processSample();
+		op4.setPhaseMod(operator4Feedback * out4);
 		auto out3 = op3.processSample();
 
 		op2.setPhaseMod(0.5f * (out3 + out4));
@@ -145,7 +151,7 @@ float Voice::processSample()
 	case III:
 	{
 		auto out4 = op4.processSample();
-
+		op4.setPhaseMod(operator4Feedback * out4);
 		auto out3 = op3.processSample();
 
 		op2.setPhaseMod(out3);
@@ -157,7 +163,7 @@ float Voice::processSample()
 	case IV:
 	{
 		auto out4 = op4.processSample();
-
+		op4.setPhaseMod(operator4Feedback * out4);
 		op3.setPhaseMod(out4);
 		auto out3 = op3.processSample();
 
@@ -169,6 +175,7 @@ float Voice::processSample()
 	case V:
 	{
 		auto out4 = op4.processSample();
+		op4.setPhaseMod(operator4Feedback * out4);
 		auto out3 = op3.processSample();
 
 		op2.setPhaseMod(out4);
@@ -179,7 +186,7 @@ float Voice::processSample()
 	case VI:
 	{
 		auto out4 = op4.processSample();
-
+		op4.setPhaseMod(operator4Feedback * out4);
 		op3.setPhaseMod(out4);
 		op2.setPhaseMod(out4);
 		op1.setPhaseMod(out4);
@@ -189,14 +196,16 @@ float Voice::processSample()
 	case VII:
 	{
 		auto out4 = op4.processSample();
-
+		op4.setPhaseMod(operator4Feedback * out4);
 		op3.setPhaseMod(out4);
 
 		return (op1.processSample() + op2.processSample() + op3.processSample()) / 3.f;
 	}
 	case VIII:
 	{
-		return (op1.processSample() + op2.processSample() + op3.processSample() + op4.processSample()) / 4.f;
+		auto out4 = op4.processSample();
+		op4.setPhaseMod(operator4Feedback * out4);
+		return (op1.processSample() + op2.processSample() + op3.processSample() + out4) / 4.f;
 	}
 	default:
 		return 0.f;

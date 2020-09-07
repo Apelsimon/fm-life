@@ -28,7 +28,8 @@ OperatorComponent::OperatorComponent(juce::AudioProcessorValueTreeState& paramet
 	attackAttachment(parameters, paramIds.attckId),
     decayAttachment(parameters, paramIds.decayId),
 	sustainAttachment(parameters, paramIds.sustainId),
-	releaseAttachment(parameters, paramIds.releaseId)
+	releaseAttachment(parameters, paramIds.releaseId),
+	feedbackAttachment(parameters, paramIds.feedbackId)
 {
 	addAndMakeVisible(operatorLabel);
 	initAndPublishSlider(ratioAttachment(), " ratio");
@@ -36,6 +37,11 @@ OperatorComponent::OperatorComponent(juce::AudioProcessorValueTreeState& paramet
 	initAndPublishSlider(decayAttachment(), " decay");
 	initAndPublishSlider(sustainAttachment(), " sustain");
 	initAndPublishSlider(releaseAttachment(), " release");
+
+	if (paramIds.ratioId == ParameterConfig::Id::Operator4.ratioId)
+	{
+		initAndPublishSlider(feedbackAttachment(), " feedback");
+	}
 }
 
 OperatorComponent::~OperatorComponent()
@@ -56,7 +62,7 @@ void OperatorComponent::resized()
 	constexpr auto Padding = 10.f;
 
 	auto bounds = getLocalBounds().reduced(Padding);
-	const auto childComponentWidth = bounds.getWidth() / 6.f;
+	const auto childComponentWidth = bounds.getWidth() / 7.f;
 
 	operatorLabel.setBounds(bounds.removeFromLeft(childComponentWidth));
 	ratioAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
@@ -64,6 +70,7 @@ void OperatorComponent::resized()
 	decayAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
 	sustainAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
 	releaseAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
+	feedbackAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
 }
 
 void OperatorComponent::initAndPublishSlider(juce::Slider& slider, const juce::String& suffix)

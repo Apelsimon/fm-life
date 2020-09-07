@@ -49,6 +49,7 @@ private:
 	jos::Operator op2;
 	jos::Operator op3;
 	jos::Operator op4;
+	float operator4Feedback;
 	AlgorithmChoice algorithmChoice;
 };
 

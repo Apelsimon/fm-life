@@ -185,6 +185,7 @@ void addFloatParametersToLayout(juce::AudioProcessorValueTreeState::ParameterLay
 	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.decayId, "DecayParam", paramValues.decay.min, paramValues.decay.max, paramValues.decay.def));
 	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.sustainId, "SustainParam", paramValues.sustain.min, paramValues.sustain.max, paramValues.sustain.def));
 	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.releaseId, "ReleaseParam", paramValues.release.min, paramValues.release.max, paramValues.release.def));
+	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.feedbackId, "FeedbackParam", paramValues.feedback.min, paramValues.feedback.max, paramValues.feedback.def));
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout FmlifeAudioProcessor::createParameterLayout() const
