@@ -4,6 +4,7 @@
 
 #include "ComponentAttachment.h"
 #include "ParameterConfig.h"
+#include "WaveTypeComboBoxLookAndFeel.h"
 
 class OperatorComponent  : public juce::Component
 {
@@ -25,6 +26,9 @@ private:
 	jos::SliderAttachment sustainAttachment;
 	jos::SliderAttachment releaseAttachment;
 	jos::SliderAttachment feedbackAttachment;
+
+	WaveTypeComboBoxLookAndFeel waveTypeComboBoxLookAndFeel;
+	juce::ComboBox waveTypeComboBox;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OperatorComponent)
 };

@@ -2,6 +2,8 @@
 
 #include <JuceHeader.h>
 
+#include <unordered_map>
+
 namespace ParameterConfig
 {
 
@@ -90,6 +92,21 @@ namespace Values
 		"VI",
 		"VII",
 		"VIII"
+	};
+
+	enum WaveType
+	{
+		Sine,
+		Square,
+		Triangle,
+		Saw
+	};
+
+	static std::unordered_map<WaveType, juce::String> WaveTypeChoices{
+		{Sine, "Sine"},
+		{ Square, "Square" },
+		{ Triangle, "Triangle" },
+		{ Saw, "Saw" },
 	};
 }
 

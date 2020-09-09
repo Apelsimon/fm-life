@@ -9,6 +9,7 @@
 */
 
 #include <JuceHeader.h>
+
 #include "OperatorComponent.h"
 
 juce::String getLabelTextFromParameterId(const ParameterConfig::Id::OperatorParamIds& paramIds)
@@ -29,7 +30,8 @@ OperatorComponent::OperatorComponent(juce::AudioProcessorValueTreeState& paramet
     decayAttachment(parameters, paramIds.decayId),
 	sustainAttachment(parameters, paramIds.sustainId),
 	releaseAttachment(parameters, paramIds.releaseId),
-	feedbackAttachment(parameters, paramIds.feedbackId)
+	feedbackAttachment(parameters, paramIds.feedbackId),
+	waveTypeComboBox()
 {
 	addAndMakeVisible(operatorLabel);
 	initAndPublishSlider(ratioAttachment(), " ratio");
@@ -42,6 +44,15 @@ OperatorComponent::OperatorComponent(juce::AudioProcessorValueTreeState& paramet
 	{
 		initAndPublishSlider(feedbackAttachment(), " feedback");
 	}
+
+	waveTypeComboBox.setLookAndFeel(&waveTypeComboBoxLookAndFeel);
+	addAndMakeVisible(waveTypeComboBox);
+	
+	waveTypeComboBox.addItem(ParameterConfig::Values::WaveTypeChoices[ParameterConfig::Values::Sine], 1);
+	waveTypeComboBox.addItem(ParameterConfig::Values::WaveTypeChoices[ParameterConfig::Values::Square], 2);
+	waveTypeComboBox.addItem(ParameterConfig::Values::WaveTypeChoices[ParameterConfig::Values::Triangle], 3);
+	waveTypeComboBox.addItem(ParameterConfig::Values::WaveTypeChoices[ParameterConfig::Values::Saw], 4);
+	waveTypeComboBox.setSelectedId(1);
 }
 
 OperatorComponent::~OperatorComponent()
@@ -62,7 +73,7 @@ void OperatorComponent::resized()
 	constexpr auto Padding = 10.f;
 
 	auto bounds = getLocalBounds().reduced(Padding);
-	const auto childComponentWidth = bounds.getWidth() / 7.f;
+	const auto childComponentWidth = bounds.getWidth() / 8.f;
 
 	operatorLabel.setBounds(bounds.removeFromLeft(childComponentWidth));
 	ratioAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
@@ -71,6 +82,7 @@ void OperatorComponent::resized()
 	sustainAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
 	releaseAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
 	feedbackAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
+	waveTypeComboBox.setBounds(bounds.removeFromLeft(childComponentWidth));
 }
 
 void OperatorComponent::initAndPublishSlider(juce::Slider& slider, const juce::String& suffix)

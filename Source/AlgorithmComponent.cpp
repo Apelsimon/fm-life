@@ -52,7 +52,7 @@ static void strokeAndFillPath(juce::Graphics& g, juce::Path& path)
 {
 	const auto pathStrokeType = juce::PathStrokeType{ 2.5f };
 	g.strokePath(path, pathStrokeType);
-	g.fillPath(path);
+	g.fillPath(path); // TODO: use onlye strokepath to simplify paintAlgorithms
 };
 
 static void drawOperatorNumber(juce::Graphics& g, const juce::Rectangle<float>& opRect1, const juce::Rectangle<float>& opRect2,
