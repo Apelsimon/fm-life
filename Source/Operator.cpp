@@ -6,7 +6,36 @@ namespace jos
 Operator::Operator(std::function<void()> envelopeDoneCb) : carrierFrequency(0.f), phaseMod(0.f), ratio(0.f), processorChain(), heapBlock(), tempBlock(), onInactiveEnvelope(envelopeDoneCb)
 {
 	auto& osc = processorChain.get<OscIndex>();
-	osc.initialise([this](float input) { return std::sin(input + 4.f * phaseMod); });
+	osc.initialise([this](float input) { 
+
+		auto phase = input + 4.f * phaseMod;
+		while (phase > juce::MathConstants<float>::pi) phase -= juce::MathConstants<float>::twoPi;
+		
+		switch (waveType)
+		{
+		case ParameterConfig::Values::WaveType::Sine:
+		{
+			return std::sin(phase);
+		}
+		case ParameterConfig::Values::WaveType::Square:
+		{
+			return phase < 0.f ? -1.f : 1.f;
+		}
+		case ParameterConfig::Values::WaveType::Triangle:
+		{
+			if (phase < -juce::MathConstants<float>::halfPi)    return 2.f + phase * 2.f / juce::MathConstants<float>::pi;
+			else if(phase < juce::MathConstants<float>::halfPi) return phase * -2.f / juce::MathConstants<float>::pi;
+			else                                                return phase * 2.f / juce::MathConstants<float>::pi - 2.f;
+		}
+		case ParameterConfig::Values::WaveType::Saw:
+		{
+			return (phase < 0.f ? 1.f : -1.f) + phase / juce::MathConstants<float>::pi;
+		}
+		default:
+			return 0.f;
+			break;
+		}
+	});
 }
 
 void Operator::prepare(const juce::dsp::ProcessSpec& spec)

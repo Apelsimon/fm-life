@@ -2,6 +2,8 @@
 
 #include <JuceHeader.h>
 
+#include "ParameterConfig.h"
+
 #include <functional>
 
 namespace jos
@@ -26,6 +28,7 @@ namespace jos
 		void setDecay(float decay);
 		void setSustain(float sustain);
 		void setRelease(float release);
+		void setWaveType(ParameterConfig::Values::WaveType type) { waveType = type; }
 
 	private:
 
@@ -71,5 +74,6 @@ namespace jos
 		juce::HeapBlock<char> heapBlock;
 		juce::dsp::AudioBlock<float> tempBlock;
 		std::function<void()> onInactiveEnvelope;
+		ParameterConfig::Values::WaveType waveType;
 	};
 }

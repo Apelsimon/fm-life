@@ -2,8 +2,6 @@
 
 #include <JuceHeader.h>
 
-#include <unordered_map>
-
 namespace ParameterConfig
 {
 
@@ -17,6 +15,7 @@ namespace Id
 		juce::String sustainId;
 		juce::String releaseId;
 		juce::String feedbackId;
+		juce::String wavetypeChoicesId;
 	};
 
 	static const OperatorParamIds Operator1{
@@ -25,7 +24,8 @@ namespace Id
 		"Operator1DecayId",
 		"Operator1SustainId",
 		"Operator1ReleaseId",
-		"Operator1FeedbackId"
+		"Operator1FeedbackId",
+		"Operator1WaveTypeChoicesId"
 	};
 	static const OperatorParamIds Operator2{
 		"Operator2RatioId",
@@ -33,7 +33,8 @@ namespace Id
 		"Operator2DecayId",
 		"Operator2SustainId",
 		"Operator2ReleaseId",
-		"Operator2FeedbackId"
+		"Operator2FeedbackId",
+		"Operator2WaveTypeChoicesId"
 	};
 	static const OperatorParamIds Operator3{
 		"Operator3RatioId",
@@ -41,7 +42,8 @@ namespace Id
 		"Operator3DecayId",
 		"Operator3SustainId",
 		"Operator3ReleaseId",
-		"Operator3FeedbackId"
+		"Operator3FeedbackId",
+		"Operator3WaveTypeChoicesId"
 	};
 	static const OperatorParamIds Operator4{
 		"Operator4RatioId",
@@ -49,7 +51,8 @@ namespace Id
 		"Operator4DecayId",
 		"Operator4SustainId",
 		"Operator4ReleaseId",
-		"Operator4FeedbackId"
+		"Operator4FeedbackId",
+		"Operator4WaveTypeChoicesId"
 	};
 
 	static const juce::String AlgorithmChoices = "AlgorithmChoicesId";
@@ -96,17 +99,17 @@ namespace Values
 
 	enum WaveType
 	{
-		Sine,
+		Sine = 0,
 		Square,
 		Triangle,
 		Saw
 	};
 
-	static std::unordered_map<WaveType, juce::String> WaveTypeChoices{
-		{Sine, "Sine"},
-		{ Square, "Square" },
-		{ Triangle, "Triangle" },
-		{ Saw, "Saw" },
+	static const juce::StringArray WaveTypeChoices{
+		"Sine",
+		"Square",
+		"Triangle",
+		"Saw",
 	};
 }
 

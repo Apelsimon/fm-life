@@ -26,9 +26,9 @@ private:
 	jos::SliderAttachment sustainAttachment;
 	jos::SliderAttachment releaseAttachment;
 	jos::SliderAttachment feedbackAttachment;
-
+	
 	WaveTypeComboBoxLookAndFeel waveTypeComboBoxLookAndFeel;
-	juce::ComboBox waveTypeComboBox;
+	jos::ComboBoxAttachment waveTypeAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OperatorComponent)
 };
