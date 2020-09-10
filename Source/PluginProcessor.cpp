@@ -206,7 +206,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout FmlifeAudioProcessor::create
 	addOperatorChoiceParametersToLayout(parameterLayout, ParameterConfig::Id::Operator3.wavetypeChoicesId);
 	addOperatorChoiceParametersToLayout(parameterLayout, ParameterConfig::Id::Operator4.wavetypeChoicesId);
 
-	parameterLayout.add(std::make_unique<juce::AudioParameterChoice>(ParameterConfig::Id::AlgorithmChoices, "AlgorithmChoices", ParameterConfig::Values::AlgorithmChoices, 0));
+	parameterLayout.add(std::make_unique<juce::AudioParameterInt>(ParameterConfig::Id::AlgorithmChoices, "AlgorithmChoices", ParameterConfig::Values::AlgorithmChocies.min, ParameterConfig::Values::AlgorithmChocies.max,
+		ParameterConfig::Values::AlgorithmChocies.def));
 
 	return parameterLayout;
 }

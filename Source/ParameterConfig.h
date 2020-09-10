@@ -60,21 +60,22 @@ namespace Id
 
 namespace Values
 {
+	template<typename T>
+	struct ValueLimits
+	{
+		T min;
+		T max;
+		T def;
+	};
+
 	struct OperatorParamValues
 	{
-		struct Values
-		{
-			float min;
-			float max;
-			float def;
-		};
-
-		Values ratio;
-		Values attack;
-		Values decay;
-		Values sustain;
-		Values release;
-		Values feedback;
+		ValueLimits<float> ratio;
+		ValueLimits<float> attack;
+		ValueLimits<float> decay;
+		ValueLimits<float> sustain;
+		ValueLimits<float> release;
+		ValueLimits<float> feedback;
 	};
 
 	static const OperatorParamValues Operator{
@@ -86,16 +87,19 @@ namespace Values
 		{ 0.f, 1.f, 0.f }
 	};
 
-	static const juce::StringArray AlgorithmChoices{
-		"I",
-		"II",
-		"III",
-		"IV",
-		"V",
-		"VI",
-		"VII",
-		"VIII"
+	enum AlgorithmType
+	{
+		I = 1,
+		II,
+		III,
+		IV,
+		V,
+		VI,
+		VII,
+		VIII
 	};
+
+	static const ValueLimits<int> AlgorithmChocies{ 1, 8, 1 };
 
 	enum WaveType
 	{

@@ -13,12 +13,9 @@ AlgorithmComponent::AlgorithmComponent(juce::AudioProcessorValueTreeState& param
 	heightPadding(0.f)
 {
 	addAndMakeVisible(algorithmChoices());
-	for (auto i = 0; i < ParameterConfig::Values::AlgorithmChoices.size(); ++i)
-	{
-		algorithmChoices().addItem(ParameterConfig::Values::AlgorithmChoices[i], i + 1);
-	}
-	algorithmChoices().setSelectedId(I);
-	algorithmChoices().onChange = [this]() { repaint(); };
+	algorithmChoices().setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+	algorithmChoices().setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, false, 0, 0);
+	algorithmChoices().onValueChange = [this]() { repaint(); };
 }
 
 AlgorithmComponent::~AlgorithmComponent()
@@ -29,16 +26,17 @@ void AlgorithmComponent::paint (juce::Graphics& g)
 {
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
 	
-	auto currentSelection = algorithmChoices().getSelectedId();
+	auto currentSelection = static_cast<int>(algorithmChoices().getValue());
 	auto bounds = getLocalBounds();
 
-	paintAlgorithms(g, static_cast<AlgorithmType>(currentSelection), bounds.removeFromRight(bounds.getWidth() * (1.f - ComboboxWidthRatio)).reduced(20.f));
+	paintAlgorithms(g, static_cast<ParameterConfig::Values::AlgorithmType>(currentSelection), bounds.removeFromRight(bounds.getWidth() * AlgoritmBoxesWidthRatio).reduced(20.f));
 }
 
 void AlgorithmComponent::resized()
 {
 	auto bounds = getLocalBounds();
-	algorithmChoices().setBounds(bounds.removeFromLeft(bounds.getWidth() * ComboboxWidthRatio));
+	auto nonAlgoBoxBounds = bounds.removeFromLeft(bounds.getWidth() * (1.f - AlgoritmBoxesWidthRatio));
+	algorithmChoices().setBounds(nonAlgoBoxBounds.removeFromRight(nonAlgoBoxBounds.getWidth() * 0.1f));
 }
 
 static void drawPath(juce::Path& path, juce::Point<float>& position, const juce::Point<float>& positionOffset, bool startNewSubPath = true) 
@@ -65,7 +63,7 @@ static void drawOperatorNumber(juce::Graphics& g, const juce::Rectangle<float>& 
 	g.drawText("1", opRect1, juce::Justification::centred);
 }
 
-void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, AlgorithmType currentSelection, const juce::Rectangle<int>& bounds)
+void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Values::AlgorithmType currentSelection, const juce::Rectangle<int>& bounds)
 {
 	static std::once_flag operatorBoxInitFlag;
 	std::call_once(operatorBoxInitFlag, [this, bounds]() { initOperatorBoxes(bounds); });
@@ -81,7 +79,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, AlgorithmType curren
 
 	switch (currentSelection)
 	{
-	case I:
+	case ParameterConfig::Values::AlgorithmType::I:
 	{
 		juce::Path path;
 		juce::Path feedbackPath;
@@ -114,7 +112,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, AlgorithmType curren
 
 		break;
 	};
-	case II:
+	case ParameterConfig::Values::AlgorithmType::II:
 	{
 		juce::Path path;
 
@@ -151,7 +149,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, AlgorithmType curren
 
 		break;
 	};
-	case III:
+	case ParameterConfig::Values::AlgorithmType::III:
 	{
 		juce::Path path;
 
@@ -191,7 +189,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, AlgorithmType curren
 
 		break;
 	};
-	case IV:
+	case ParameterConfig::Values::AlgorithmType::IV:
 	{
 		juce::Path path;
 
@@ -231,7 +229,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, AlgorithmType curren
 
 		break;
 	};
-	case V:
+	case ParameterConfig::Values::AlgorithmType::V:
 	{
 		juce::Path path;
 
@@ -273,7 +271,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, AlgorithmType curren
 
 		break;
 	};
-	case VI:
+	case ParameterConfig::Values::AlgorithmType::VI:
 	{
 		juce::Path path;
 
@@ -326,7 +324,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, AlgorithmType curren
 
 		break;
 	};
-	case VII:
+	case ParameterConfig::Values::AlgorithmType::VII:
 	{
 		juce::Path path;
 
@@ -370,7 +368,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, AlgorithmType curren
 
 		break;
 	};
-	case VIII:
+	case ParameterConfig::Values::AlgorithmType::VIII:
 	{
 		for (auto i = 12; i < 15; ++i)
 		{

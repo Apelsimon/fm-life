@@ -3,6 +3,7 @@
 #include <JuceHeader.h>
 
 #include "ComponentAttachment.h"
+#include "ParameterConfig.h"
 
 #include <vector>
 
@@ -17,25 +18,13 @@ public:
 
 private:
 
-	enum AlgorithmType
-	{
-		I = 1,
-		II,
-		III,
-		IV,
-		V,
-		VI,
-		VII,
-		VIII
-	};
-
-	void paintAlgorithms(juce::Graphics& g, AlgorithmType currentSelection, const juce::Rectangle<int>& bounds);
+	void paintAlgorithms(juce::Graphics& g, ParameterConfig::Values::AlgorithmType currentSelection, const juce::Rectangle<int>& bounds);
 	void initOperatorBoxes(juce::Rectangle<int> bounds);
 
-	static constexpr auto ComboboxWidthRatio = 0.7f;
+	static constexpr auto AlgoritmBoxesWidthRatio = 0.3f;
 	static constexpr auto NumOperatorBoxes = 16;
 
-	jos::ComboBoxAttachment algorithmChoices;
+	jos::SliderAttachment algorithmChoices;
 	std::vector<juce::Rectangle<float>> operatorBoxes;
 	float boxWidth;
 	float boxHeight;

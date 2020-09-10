@@ -28,18 +28,6 @@ public:
 
 private:
 
-	enum AlgorithmChoice
-	{
-		I = 0,
-		II,
-		III,
-		IV,
-		V,
-		VI,
-		VII,
-		VIII
-	};
-
 	void initOperatorParameters(jos::Operator& op, juce::AudioProcessorValueTreeState& parameters, const ParameterConfig::Id::OperatorParamIds& paramIds);
 	void registerOperatorCallbacks(jos::ParameterListener& paramListener, const ParameterConfig::Id::OperatorParamIds& paramIds, jos::Operator& op);
 	float processSample();
@@ -50,7 +38,7 @@ private:
 	jos::Operator op3;
 	jos::Operator op4;
 	float operator4Feedback;
-	AlgorithmChoice algorithmChoice;
+	ParameterConfig::Values::AlgorithmType algorithmChoice;
 };
 
 }
