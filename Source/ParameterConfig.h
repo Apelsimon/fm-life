@@ -56,6 +56,7 @@ namespace Id
 	};
 
 	static const juce::String AlgorithmChoices = "AlgorithmChoicesId";
+	static const juce::String RandomizeParameterButtons = "RandomizeParameterButtonsId";
 }
 
 namespace Values

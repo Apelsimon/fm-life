@@ -16,6 +16,9 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+	void randomize1();
+	void randomize2();
+
 private:
 	void initAndPublishSlider(juce::Slider& slider, const juce::String& suffix);
 

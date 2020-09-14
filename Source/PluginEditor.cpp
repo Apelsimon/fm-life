@@ -14,6 +14,9 @@
 //==============================================================================
 FmlifeAudioProcessorEditor::FmlifeAudioProcessorEditor (FmlifeAudioProcessor& p, juce::AudioProcessorValueTreeState& parameters)
     : AudioProcessorEditor (&p), audioProcessor (p), parameters(parameters), 
+	dummyComponent(),
+	randomizeParametersButton1(),
+	randomizeParametersButton2(),
 	algorithmComponent(parameters),
 	operatorComponent1(parameters, ParameterConfig::Id::Operator1),
 	operatorComponent2(parameters, ParameterConfig::Id::Operator2),
@@ -23,11 +26,19 @@ FmlifeAudioProcessorEditor::FmlifeAudioProcessorEditor (FmlifeAudioProcessor& p,
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (1200, 600);
+	addAndMakeVisible(dummyComponent);
+	addAndMakeVisible(randomizeParametersButton1);
+	addAndMakeVisible(randomizeParametersButton2);
 	addAndMakeVisible(algorithmComponent);
 	addAndMakeVisible(operatorComponent1);
 	addAndMakeVisible(operatorComponent2);
 	addAndMakeVisible(operatorComponent3);
 	addAndMakeVisible(operatorComponent4);
+
+	randomizeParametersButton1.setButtonText("Don't push");
+	randomizeParametersButton1.onClick = [this]() { randomizeParameters1(); };
+	randomizeParametersButton2.setButtonText("Don't push this either");
+	randomizeParametersButton2.onClick = [this]() { randomizeParameters2(); };
 }
 
 FmlifeAudioProcessorEditor::~FmlifeAudioProcessorEditor()
@@ -47,12 +58,32 @@ void FmlifeAudioProcessorEditor::resized()
     // subcomponents in your editor..
 	auto bounds = getLocalBounds();
 
-	auto algoritmChoicesBounds = bounds.removeFromTop(bounds.getHeight() * 0.2);
-	algorithmComponent.setBounds(algoritmChoicesBounds);
+	auto topPanelBounds = bounds.removeFromTop(bounds.getHeight() * 0.2f);
+	randomizeParametersButton1.setBounds(topPanelBounds.removeFromLeft(topPanelBounds.getWidth() * 0.2f));
+	randomizeParametersButton2.setBounds(topPanelBounds.removeFromLeft(topPanelBounds.getWidth() * 0.2f));
+	dummyComponent.setBounds(topPanelBounds.removeFromLeft(topPanelBounds.getWidth() * 0.8f));
+	algorithmComponent.setBounds(topPanelBounds);
 
 	auto componentHeight = bounds.getHeight() / 4.f;
 	operatorComponent1.setBounds(bounds.removeFromTop(componentHeight));
 	operatorComponent2.setBounds(bounds.removeFromTop(componentHeight));
 	operatorComponent3.setBounds(bounds.removeFromTop(componentHeight));
 	operatorComponent4.setBounds(bounds.removeFromTop(componentHeight));
+}
+
+void FmlifeAudioProcessorEditor::randomizeParameters1()
+{
+	algorithmComponent.randomize();
+	operatorComponent1.randomize1();
+	operatorComponent2.randomize1();
+	operatorComponent3.randomize1();
+	operatorComponent4.randomize1();
+}
+
+void FmlifeAudioProcessorEditor::randomizeParameters2()
+{
+	operatorComponent1.randomize2();
+	operatorComponent2.randomize2();
+	operatorComponent3.randomize2();
+	operatorComponent4.randomize2();
 }

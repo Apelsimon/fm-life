@@ -11,6 +11,8 @@
 #include "ParameterConfig.h"
 #include "PluginEditor.h"
 
+#include <random>
+
 //==============================================================================
 FmlifeAudioProcessor::FmlifeAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -208,6 +210,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout FmlifeAudioProcessor::create
 
 	parameterLayout.add(std::make_unique<juce::AudioParameterInt>(ParameterConfig::Id::AlgorithmChoices, "AlgorithmChoices", ParameterConfig::Values::AlgorithmChocies.min, ParameterConfig::Values::AlgorithmChocies.max,
 		ParameterConfig::Values::AlgorithmChocies.def));
+	parameterLayout.add(std::make_unique<juce::AudioParameterBool>(ParameterConfig::Id::RandomizeParameterButtons, "RandomizeParameterButtons", false));
 
 	return parameterLayout;
 }

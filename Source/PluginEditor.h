@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 
 #include "AlgorithmComponent.h"
+#include "ComponentAttachment.h"
 #include "OperatorComponent.h"
 #include "PluginProcessor.h"
 
@@ -28,11 +29,17 @@ public:
     void resized() override;
 
 private:
+	void randomizeParameters1();
+	void randomizeParameters2();
+
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     FmlifeAudioProcessor& audioProcessor;
 	juce::AudioProcessorValueTreeState& parameters;
 
+	juce::Component dummyComponent;
+	juce::TextButton randomizeParametersButton1;
+	juce::TextButton randomizeParametersButton2;
 	AlgorithmComponent algorithmComponent;
 	OperatorComponent operatorComponent1;
 	OperatorComponent operatorComponent2;

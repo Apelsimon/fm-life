@@ -1,16 +1,10 @@
-/*
-  ==============================================================================
-
-    OperatorComponent.cpp
-    Created: 28 Aug 2020 4:38:23pm
-    Author:  Apelsimon
-
-  ==============================================================================
-*/
-
 #include <JuceHeader.h>
 
 #include "OperatorComponent.h"
+#include "Util.h"
+
+
+
 
 juce::String getLabelTextFromParameterId(const ParameterConfig::Id::OperatorParamIds& paramIds)
 {
@@ -83,6 +77,32 @@ void OperatorComponent::resized()
 	releaseAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
 	feedbackAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
 	waveTypeAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
+}
+
+void OperatorComponent::randomize1()
+{
+	auto gen = createMersenneTwisterEngine();
+	std::uniform_real_distribution<float> ratioDist(ParameterConfig::Values::Operator.ratio.min, ParameterConfig::Values::Operator.ratio.max);
+	std::uniform_int_distribution<int> waveTypeDist(ParameterConfig::Values::WaveType::Sine + 1, ParameterConfig::Values::WaveType::Saw + 1);
+
+	ratioAttachment().setValue(std::round(ratioDist(gen)));
+	waveTypeAttachment().setSelectedId(waveTypeDist(gen));
+}
+
+void OperatorComponent::randomize2()
+{
+	auto gen = createMersenneTwisterEngine();
+	std::uniform_real_distribution<float> attackDist(ParameterConfig::Values::Operator.attack.min, ParameterConfig::Values::Operator.attack.max);
+	std::uniform_real_distribution<float> decayDist(ParameterConfig::Values::Operator.decay.min, ParameterConfig::Values::Operator.decay.max);
+	std::uniform_real_distribution<float> sustainDist(ParameterConfig::Values::Operator.sustain.min, ParameterConfig::Values::Operator.sustain.max);
+	std::uniform_real_distribution<float> releaseDist(ParameterConfig::Values::Operator.release.min, ParameterConfig::Values::Operator.release.max);
+	std::uniform_real_distribution<float> feedbackDist(ParameterConfig::Values::Operator.feedback.min, ParameterConfig::Values::Operator.feedback.max);
+
+	attackAttachment().setValue(attackDist(gen));
+	decayAttachment().setValue(decayDist(gen));
+	sustainAttachment().setValue(sustainDist(gen));
+	releaseAttachment().setValue(releaseDist(gen));
+	feedbackAttachment().setValue(feedbackDist(gen));
 }
 
 void OperatorComponent::initAndPublishSlider(juce::Slider& slider, const juce::String& suffix)

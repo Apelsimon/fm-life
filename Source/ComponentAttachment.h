@@ -26,6 +26,8 @@ namespace jos
 
 	using SliderAttachment = ComponentAttachment<juce::Slider, juce::AudioProcessorValueTreeState::SliderAttachment>;
 	using ComboBoxAttachment = ComponentAttachment<juce::ComboBox, juce::AudioProcessorValueTreeState::ComboBoxAttachment>;
+	using TextButtonAttachment = ComponentAttachment<juce::TextButton, juce::AudioProcessorValueTreeState::ButtonAttachment>;
+
 } // namespace jos
 
 

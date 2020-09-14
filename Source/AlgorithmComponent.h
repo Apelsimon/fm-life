@@ -16,12 +16,13 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-private:
+	void randomize();
 
+private:
 	void paintAlgorithms(juce::Graphics& g, ParameterConfig::Values::AlgorithmType currentSelection, const juce::Rectangle<int>& bounds);
 	void initOperatorBoxes(juce::Rectangle<int> bounds);
 
-	static constexpr auto AlgoritmBoxesWidthRatio = 0.3f;
+	static constexpr auto AlgoritmBoxesWidthRatio = 0.5f;
 	static constexpr auto NumOperatorBoxes = 16;
 
 	jos::SliderAttachment algorithmChoices;

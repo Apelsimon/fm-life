@@ -2,6 +2,7 @@
 
 #include "AlgorithmComponent.h"
 #include "ParameterConfig.h"
+#include "Util.h"
 
 //==============================================================================
 AlgorithmComponent::AlgorithmComponent(juce::AudioProcessorValueTreeState& parameters) :
@@ -36,7 +37,14 @@ void AlgorithmComponent::resized()
 {
 	auto bounds = getLocalBounds();
 	auto nonAlgoBoxBounds = bounds.removeFromLeft(bounds.getWidth() * (1.f - AlgoritmBoxesWidthRatio));
-	algorithmChoices().setBounds(nonAlgoBoxBounds.removeFromRight(nonAlgoBoxBounds.getWidth() * 0.1f));
+	algorithmChoices().setBounds(nonAlgoBoxBounds.removeFromRight(nonAlgoBoxBounds.getWidth()));
+}
+
+void AlgorithmComponent::randomize()
+{
+	auto gen = createMersenneTwisterEngine();
+	std::uniform_int_distribution<int> algoTypeDist(ParameterConfig::Values::AlgorithmType::I, ParameterConfig::Values::AlgorithmType::VIII);
+	algorithmChoices().setValue(algoTypeDist(gen));
 }
 
 static void drawPath(juce::Path& path, juce::Point<float>& position, const juce::Point<float>& positionOffset, bool startNewSubPath = true) 
