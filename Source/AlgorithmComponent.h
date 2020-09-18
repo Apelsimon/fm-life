@@ -19,18 +19,27 @@ public:
 	void randomize();
 
 private:
-	void paintAlgorithms(juce::Graphics& g, ParameterConfig::Values::AlgorithmType currentSelection, const juce::Rectangle<int>& bounds);
-	void initOperatorBoxes(juce::Rectangle<int> bounds);
+	class OperatorBoxesComponent : public juce::Component
+	{
+		static constexpr auto NumOperatorBoxes = 16;
+	public:
+		OperatorBoxesComponent() : operatorBoxes(NumOperatorBoxes) {}
 
-	static constexpr auto AlgoritmBoxesWidthRatio = 0.5f;
-	static constexpr auto NumOperatorBoxes = 16;
+		void paint(juce::Graphics&) override;
+		void resized() override;
+
+		void initOperatorBoxes(juce::Rectangle<int> bounds);
+
+		std::vector<juce::Rectangle<float>> operatorBoxes;
+		ParameterConfig::Values::AlgorithmType currentAlgorithmChoice;
+		float boxWidth;
+		float boxHeight;
+		float widthPadding;
+		float heightPadding;
+	};
 
 	jos::SliderAttachment algorithmChoices;
-	std::vector<juce::Rectangle<float>> operatorBoxes;
-	float boxWidth;
-	float boxHeight;
-	float widthPadding;
-	float heightPadding;
+	OperatorBoxesComponent operatorBoxes;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AlgorithmComponent)
 };

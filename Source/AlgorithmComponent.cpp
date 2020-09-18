@@ -7,16 +7,19 @@
 //==============================================================================
 AlgorithmComponent::AlgorithmComponent(juce::AudioProcessorValueTreeState& parameters) :
 	algorithmChoices(parameters, ParameterConfig::Id::AlgorithmChoices),
-	operatorBoxes(NumOperatorBoxes),
-	boxWidth(0.f),
-	boxHeight(0.f),
-	widthPadding(0.f),
-	heightPadding(0.f)
+	operatorBoxes()
 {
 	addAndMakeVisible(algorithmChoices());
 	algorithmChoices().setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
 	algorithmChoices().setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, false, 0, 0);
-	algorithmChoices().onValueChange = [this]() { repaint(); };
+	algorithmChoices().onValueChange = [this]() { operatorBoxes.currentAlgorithmChoice = static_cast<ParameterConfig::Values::AlgorithmType>(
+		static_cast<int>(algorithmChoices().getValue()));
+		operatorBoxes.repaint();
+	};
+
+	addAndMakeVisible(operatorBoxes);
+	operatorBoxes.currentAlgorithmChoice = static_cast<ParameterConfig::Values::AlgorithmType>(
+		static_cast<int>(algorithmChoices().getValue()));
 }
 
 AlgorithmComponent::~AlgorithmComponent()
@@ -25,19 +28,14 @@ AlgorithmComponent::~AlgorithmComponent()
 
 void AlgorithmComponent::paint (juce::Graphics& g)
 {
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
-	
-	auto currentSelection = static_cast<int>(algorithmChoices().getValue());
-	auto bounds = getLocalBounds();
-
-	paintAlgorithms(g, static_cast<ParameterConfig::Values::AlgorithmType>(currentSelection), bounds.removeFromRight(bounds.getWidth() * AlgoritmBoxesWidthRatio).reduced(20.f));
+    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 }
 
 void AlgorithmComponent::resized()
 {
 	auto bounds = getLocalBounds();
-	auto nonAlgoBoxBounds = bounds.removeFromLeft(bounds.getWidth() * (1.f - AlgoritmBoxesWidthRatio));
-	algorithmChoices().setBounds(nonAlgoBoxBounds.removeFromRight(nonAlgoBoxBounds.getWidth()));
+	algorithmChoices().setBounds(bounds.removeFromLeft(bounds.getWidth() * 0.2f));
+	operatorBoxes.setBounds(bounds);
 }
 
 void AlgorithmComponent::randomize()
@@ -71,11 +69,8 @@ static void drawOperatorNumber(juce::Graphics& g, const juce::Rectangle<float>& 
 	g.drawText("1", opRect1, juce::Justification::centred);
 }
 
-void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Values::AlgorithmType currentSelection, const juce::Rectangle<int>& bounds)
+void AlgorithmComponent::OperatorBoxesComponent::paint(juce::Graphics& g)
 {
-	static std::once_flag operatorBoxInitFlag;
-	std::call_once(operatorBoxInitFlag, [this, bounds]() { initOperatorBoxes(bounds); });
-
 	g.setColour(juce::Colours::wheat);
 	for (auto& box : operatorBoxes)
 	{
@@ -85,7 +80,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 
 	g.setColour(juce::Colours::lightblue);
 
-	switch (currentSelection)
+	switch (currentAlgorithmChoice)
 	{
 	case ParameterConfig::Values::AlgorithmType::I:
 	{
@@ -95,7 +90,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 		auto currentPosition = juce::Point<float>{ operatorBoxes[1].getCentreX(), operatorBoxes[1].getY() - 0.5f * heightPadding };
 		drawPath(path, currentPosition, { 0.f, 0.5f * heightPadding });
 
-		currentPosition = {operatorBoxes[1].getCentreX(), operatorBoxes[1].getBottom() };
+		currentPosition = { operatorBoxes[1].getCentreX(), operatorBoxes[1].getBottom() };
 		drawPath(path, currentPosition, { 0.f, heightPadding });
 
 		currentPosition = { operatorBoxes[5].getCentreX(), operatorBoxes[5].getBottom() };
@@ -107,7 +102,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 		currentPosition = { operatorBoxes[13].getCentreX(), operatorBoxes[13].getBottom() };
 		drawPath(path, currentPosition, { 0.f, heightPadding });
 
-		currentPosition = { operatorBoxes[1].getCentreX(), operatorBoxes[1].getBottom() + 0.5f * heightPadding};
+		currentPosition = { operatorBoxes[1].getCentreX(), operatorBoxes[1].getBottom() + 0.5f * heightPadding };
 		drawPath(feedbackPath, currentPosition, { 0.5f * (boxWidth + widthPadding), 0.f });
 		drawPath(feedbackPath, currentPosition, { 0.f, -boxHeight - heightPadding }, false);
 		drawPath(feedbackPath, currentPosition, { -0.5f * (boxWidth + widthPadding), 0.f }, false);
@@ -139,7 +134,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 		currentPosition = { operatorBoxes[6].getCentreX(), operatorBoxes[6].getY() - 0.5f * heightPadding };
 		drawPath(path2, currentPosition, { 0.f, 0.5f * heightPadding });
 
-		currentPosition = { operatorBoxes[6].getCentreX(), operatorBoxes[6].getBottom()};
+		currentPosition = { operatorBoxes[6].getCentreX(), operatorBoxes[6].getBottom() };
 		drawPath(path2, currentPosition, { 0.f, 0.5f * heightPadding });
 		drawPath(path2, currentPosition, { -boxWidth - widthPadding, 0.f }, false);
 
@@ -147,7 +142,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 
 		juce::Path feedbackPath;
 		currentPosition = { operatorBoxes[6].getCentreX(), operatorBoxes[6].getBottom() + 0.5f * heightPadding };
-		drawPath(feedbackPath, currentPosition, { 0.5f * (boxWidth + widthPadding), 0.f});
+		drawPath(feedbackPath, currentPosition, { 0.5f * (boxWidth + widthPadding), 0.f });
 		drawPath(feedbackPath, currentPosition, { 0.f, -boxHeight - heightPadding }, false);
 		drawPath(feedbackPath, currentPosition, { -0.5f * (boxWidth + widthPadding), 0.f }, false);
 		strokeAndFillPath(g, feedbackPath);
@@ -177,7 +172,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 		currentPosition = juce::Point<float>{ operatorBoxes[10].getCentreX(), operatorBoxes[10].getY() - 0.5f * heightPadding };
 		drawPath(path2, currentPosition, { 0.f, 0.5f * heightPadding });
 
-		currentPosition = juce::Point<float>{ operatorBoxes[10].getCentreX(), operatorBoxes[10].getBottom()};
+		currentPosition = juce::Point<float>{ operatorBoxes[10].getCentreX(), operatorBoxes[10].getBottom() };
 		drawPath(path2, currentPosition, { 0.f, 0.5f * heightPadding });
 		drawPath(path2, currentPosition, { -boxWidth - widthPadding, 0.f }, false);
 
@@ -186,9 +181,9 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 		juce::Path feedbackPath;
 
 		currentPosition = juce::Point<float>{ operatorBoxes[10].getCentreX(), operatorBoxes[10].getBottom() + 0.5f * heightPadding };
-		drawPath(feedbackPath, currentPosition, {0.5f * (boxWidth + widthPadding), 0.f });
+		drawPath(feedbackPath, currentPosition, { 0.5f * (boxWidth + widthPadding), 0.f });
 		drawPath(feedbackPath, currentPosition, { 0.f, -boxHeight - heightPadding }, false);
-		drawPath(feedbackPath, currentPosition, { -0.5f * (boxWidth + widthPadding), 0.f  }, false);
+		drawPath(feedbackPath, currentPosition, { -0.5f * (boxWidth + widthPadding), 0.f }, false);
 
 		strokeAndFillPath(g, feedbackPath);
 
@@ -214,7 +209,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 		currentPosition = { operatorBoxes[6].getCentreX(), operatorBoxes[6].getY() - 0.5f * heightPadding };
 		drawPath(path2, currentPosition, { 0.f, 0.5f * heightPadding });
 
-		currentPosition = { operatorBoxes[6].getCentreX(), operatorBoxes[6].getBottom()};
+		currentPosition = { operatorBoxes[6].getCentreX(), operatorBoxes[6].getBottom() };
 		drawPath(path2, currentPosition, { 0.f, heightPadding });
 
 		currentPosition = { operatorBoxes[10].getCentreX(), operatorBoxes[10].getBottom() };
@@ -225,7 +220,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 
 		juce::Path feedbackPath;
 
-		currentPosition = { operatorBoxes[6].getCentreX(), operatorBoxes[6].getBottom() + 0.5f * heightPadding};
+		currentPosition = { operatorBoxes[6].getCentreX(), operatorBoxes[6].getBottom() + 0.5f * heightPadding };
 		drawPath(feedbackPath, currentPosition, { 0.5f * (boxWidth + widthPadding), 0.f });
 		drawPath(feedbackPath, currentPosition, { 0.f, -boxHeight - heightPadding }, false);
 		drawPath(feedbackPath, currentPosition, { -0.5f * (boxWidth + widthPadding), 0.f }, false);
@@ -252,16 +247,16 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 
 		juce::Path path2;
 
-		currentPosition = { operatorBoxes[10].getCentreX(), operatorBoxes[10].getY() - 0.5f * heightPadding};
+		currentPosition = { operatorBoxes[10].getCentreX(), operatorBoxes[10].getY() - 0.5f * heightPadding };
 		drawPath(path2, currentPosition, { 0.f, 0.5f * heightPadding });
 
-		currentPosition = { operatorBoxes[10].getCentreX(), operatorBoxes[10].getBottom()};
+		currentPosition = { operatorBoxes[10].getCentreX(), operatorBoxes[10].getBottom() };
 		drawPath(path2, currentPosition, { 0.f, heightPadding });
 
 		currentPosition = { operatorBoxes[14].getCentreX(), operatorBoxes[14].getBottom() };
 		drawPath(path2, currentPosition, { 0.f, 0.5f * heightPadding });
 		drawPath(path2, currentPosition, { -0.5f * (boxWidth + widthPadding), 0.f }, false);
-		drawPath(path2, currentPosition, { 0.f, 0.5f * heightPadding}, false);
+		drawPath(path2, currentPosition, { 0.f, 0.5f * heightPadding }, false);
 
 		strokeAndFillPath(g, path2);
 
@@ -269,7 +264,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 
 		currentPosition = { operatorBoxes[10].getCentreX(), operatorBoxes[10].getBottom() + 0.5f * heightPadding };
 		drawPath(feedbackPath, currentPosition, { 0.5f * (boxWidth + widthPadding), 0.f });
-		drawPath(feedbackPath, currentPosition, { 0.f, -boxHeight - heightPadding}, false);
+		drawPath(feedbackPath, currentPosition, { 0.f, -boxHeight - heightPadding }, false);
 		drawPath(feedbackPath, currentPosition, { -0.5f * (boxWidth + widthPadding), 0.f }, false);
 
 		strokeAndFillPath(g, feedbackPath);
@@ -283,10 +278,10 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 	{
 		juce::Path path;
 
-		auto currentPosition = juce::Point<float>{ operatorBoxes[9].getCentreX(), operatorBoxes[9].getY() - 0.5f * heightPadding};
+		auto currentPosition = juce::Point<float>{ operatorBoxes[9].getCentreX(), operatorBoxes[9].getY() - 0.5f * heightPadding };
 		drawPath(path, currentPosition, { 0.f, 0.5f * heightPadding });
 
-		currentPosition = { operatorBoxes[9].getCentreX(), operatorBoxes[9].getBottom()};
+		currentPosition = { operatorBoxes[9].getCentreX(), operatorBoxes[9].getBottom() };
 		drawPath(path, currentPosition, { 0.f, heightPadding });
 
 		currentPosition = { operatorBoxes[13].getCentreX(), operatorBoxes[13].getBottom() };
@@ -296,7 +291,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 
 		juce::Path path2;
 
-		currentPosition = { operatorBoxes[9].getCentreX(), operatorBoxes[9].getBottom() + 0.5f * heightPadding};
+		currentPosition = { operatorBoxes[9].getCentreX(), operatorBoxes[9].getBottom() + 0.5f * heightPadding };
 		drawPath(path2, currentPosition, { -boxWidth - widthPadding, 0.f });
 		drawPath(path2, currentPosition, { 0.f, 0.5f * heightPadding }, false);
 
@@ -361,10 +356,10 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 		drawPath(path3, currentPosition, { 0.f, heightPadding });
 
 		strokeAndFillPath(g, path3);
-		
+
 		juce::Path feedbackPath;
 
-		currentPosition = { operatorBoxes[10].getCentreX(), operatorBoxes[10].getBottom() + 0.5f * heightPadding};
+		currentPosition = { operatorBoxes[10].getCentreX(), operatorBoxes[10].getBottom() + 0.5f * heightPadding };
 		drawPath(feedbackPath, currentPosition, { 0.5f * (boxWidth + widthPadding), 0.f });
 		drawPath(feedbackPath, currentPosition, { 0.f, -boxHeight - heightPadding }, false);
 		drawPath(feedbackPath, currentPosition, { -0.5f * (boxWidth + widthPadding), 0.f }, false);
@@ -390,17 +385,17 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 
 		juce::Path path;
 
-		auto currentPosition = juce::Point<float>{ operatorBoxes[15].getCentreX(), operatorBoxes[15].getY() - 0.5f * heightPadding};
+		auto currentPosition = juce::Point<float>{ operatorBoxes[15].getCentreX(), operatorBoxes[15].getY() - 0.5f * heightPadding };
 		drawPath(path, currentPosition, { 0.f, 0.5f * heightPadding });
 
-		currentPosition = { operatorBoxes[15].getCentreX(), operatorBoxes[15].getBottom()};
+		currentPosition = { operatorBoxes[15].getCentreX(), operatorBoxes[15].getBottom() };
 		drawPath(path, currentPosition, { 0.f, 0.5f * heightPadding });
 
 		strokeAndFillPath(g, path);
 
 		juce::Path path2;
 
-		currentPosition = { operatorBoxes[12].getCentreX(), operatorBoxes[12].getBottom() + 0.5f * heightPadding};
+		currentPosition = { operatorBoxes[12].getCentreX(), operatorBoxes[12].getBottom() + 0.5f * heightPadding };
 		drawPath(path2, currentPosition, { 3.f * (boxWidth + widthPadding), 0.f });
 
 		strokeAndFillPath(g, path2);
@@ -416,7 +411,7 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 
 		currentPosition = { operatorBoxes[15].getCentreX(), operatorBoxes[15].getBottom() + 0.2f * heightPadding };
 		drawPath(feedbackPath, currentPosition, { 0.5f * (boxWidth + widthPadding), 0.f });
-		drawPath(feedbackPath, currentPosition, { 0.f, - boxHeight - 0.7f * heightPadding }, false);
+		drawPath(feedbackPath, currentPosition, { 0.f, -boxHeight - 0.7f * heightPadding }, false);
 		drawPath(feedbackPath, currentPosition, { -0.5f * (boxWidth + widthPadding), 0.f }, false);
 
 		strokeAndFillPath(g, feedbackPath);
@@ -431,7 +426,12 @@ void AlgorithmComponent::paintAlgorithms(juce::Graphics& g, ParameterConfig::Val
 	}
 }
 
-void AlgorithmComponent::initOperatorBoxes(juce::Rectangle<int> bounds)
+void AlgorithmComponent::OperatorBoxesComponent::resized()
+{
+	initOperatorBoxes(getLocalBounds().reduced(10.f));
+}
+
+void AlgorithmComponent::OperatorBoxesComponent::initOperatorBoxes(juce::Rectangle<int> bounds)
 {	
 	boxWidth = bounds.getWidth() * 0.85f;
 	boxHeight = bounds.getHeight() * 0.65f;
