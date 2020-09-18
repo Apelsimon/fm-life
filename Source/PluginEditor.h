@@ -14,6 +14,7 @@
 #include "ComponentAttachment.h"
 #include "OperatorComponent.h"
 #include "PluginProcessor.h"
+#include "PresetComponent.h"
 
 //==============================================================================
 /**
@@ -37,9 +38,9 @@ private:
     FmlifeAudioProcessor& audioProcessor;
 	juce::AudioProcessorValueTreeState& parameters;
 
-	juce::Component dummyComponent;
 	juce::TextButton randomizeParametersButton1;
 	juce::TextButton randomizeParametersButton2;
+	PresetComponent presetComponent;
 	AlgorithmComponent algorithmComponent;
 	OperatorComponent operatorComponent1;
 	OperatorComponent operatorComponent2;

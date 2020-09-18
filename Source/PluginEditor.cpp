@@ -14,9 +14,9 @@
 //==============================================================================
 FmlifeAudioProcessorEditor::FmlifeAudioProcessorEditor (FmlifeAudioProcessor& p, juce::AudioProcessorValueTreeState& parameters)
     : AudioProcessorEditor (&p), audioProcessor (p), parameters(parameters), 
-	dummyComponent(),
 	randomizeParametersButton1(),
 	randomizeParametersButton2(),
+	presetComponent(parameters),
 	algorithmComponent(parameters),
 	operatorComponent1(parameters, ParameterConfig::Id::Operator1),
 	operatorComponent2(parameters, ParameterConfig::Id::Operator2),
@@ -26,9 +26,9 @@ FmlifeAudioProcessorEditor::FmlifeAudioProcessorEditor (FmlifeAudioProcessor& p,
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (1200, 600);
-	addAndMakeVisible(dummyComponent);
 	addAndMakeVisible(randomizeParametersButton1);
 	addAndMakeVisible(randomizeParametersButton2);
+	addAndMakeVisible(presetComponent);
 	addAndMakeVisible(algorithmComponent);
 	addAndMakeVisible(operatorComponent1);
 	addAndMakeVisible(operatorComponent2);
@@ -61,7 +61,7 @@ void FmlifeAudioProcessorEditor::resized()
 	auto topPanelBounds = bounds.removeFromTop(bounds.getHeight() * 0.2f);
 	randomizeParametersButton1.setBounds(topPanelBounds.removeFromLeft(topPanelBounds.getWidth() * 0.2f));
 	randomizeParametersButton2.setBounds(topPanelBounds.removeFromLeft(topPanelBounds.getWidth() * 0.2f));
-	dummyComponent.setBounds(topPanelBounds.removeFromLeft(topPanelBounds.getWidth() * 0.8f));
+	presetComponent.setBounds(topPanelBounds.removeFromLeft(topPanelBounds.getWidth() * 0.2f));
 	algorithmComponent.setBounds(topPanelBounds);
 
 	auto componentHeight = bounds.getHeight() / 4.f;

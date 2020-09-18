@@ -5,6 +5,17 @@
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               pluginManufacturer="jos" bundleIdentifier="com.jos.fm-life" cppLanguageStandard="17">
   <MAINGROUP id="jBcwdV" name="fm-life">
+    <GROUP id="{828285B2-E05E-20E4-014D-5CF826137539}" name="Presets">
+      <FILE id="wItHAO" name="broken_organ.xml" compile="0" resource="1"
+            file="Builds/VisualStudio2017/x64/Release/Standalone Plugin/broken_organ.xml"/>
+      <FILE id="nJjSCP" name="default.xml" compile="0" resource="1" file="Builds/VisualStudio2017/default.xml"/>
+      <FILE id="pKtxjA" name="distorted_trumpet.xml" compile="0" resource="1"
+            file="Builds/VisualStudio2017/x64/Release/Standalone Plugin/distorted_trumpet.xml"/>
+      <FILE id="JEIYPV" name="honking_keychain.xml" compile="0" resource="1"
+            file="Builds/VisualStudio2017/honking_keychain.xml"/>
+      <FILE id="upHAuB" name="shit.xml" compile="0" resource="1" file="Builds/VisualStudio2017/x64/Release/Standalone Plugin/shit.xml"/>
+      <FILE id="ugkwGg" name="wow_organ.xml" compile="0" resource="1" file="Builds/VisualStudio2017/x64/Release/Standalone Plugin/wow_organ.xml"/>
+    </GROUP>
     <GROUP id="{45590EB6-94D2-B1F3-8A12-924FAA5FA6A7}" name="Source">
       <FILE id="zmBEGk" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
@@ -39,6 +50,10 @@
       <FILE id="pD8h2T" name="WaveTypeComboBoxLookAndFeel.h" compile="0"
             resource="0" file="Source/WaveTypeComboBoxLookAndFeel.h"/>
       <FILE id="jGi52y" name="Util.h" compile="0" resource="0" file="Source/Util.h"/>
+      <FILE id="ymXTwc" name="PresetComponent.cpp" compile="1" resource="0"
+            file="Source/PresetComponent.cpp"/>
+      <FILE id="T4SpBG" name="PresetComponent.h" compile="0" resource="0"
+            file="Source/PresetComponent.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
