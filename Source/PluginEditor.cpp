@@ -25,7 +25,7 @@ FmlifeAudioProcessorEditor::FmlifeAudioProcessorEditor (FmlifeAudioProcessor& p,
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (1200, 600);
+    setSize (1000, 500);
 	addAndMakeVisible(randomizeParametersButton1);
 	addAndMakeVisible(randomizeParametersButton2);
 	addAndMakeVisible(presetComponent);
@@ -57,11 +57,14 @@ void FmlifeAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 	auto bounds = getLocalBounds();
-
+	auto componentWidth = bounds.getWidth() / 3.f;
 	auto topPanelBounds = bounds.removeFromTop(bounds.getHeight() * 0.2f);
-	randomizeParametersButton1.setBounds(topPanelBounds.removeFromLeft(topPanelBounds.getWidth() * 0.2f));
-	randomizeParametersButton2.setBounds(topPanelBounds.removeFromLeft(topPanelBounds.getWidth() * 0.2f));
-	presetComponent.setBounds(topPanelBounds.removeFromLeft(topPanelBounds.getWidth() * 0.2f));
+	
+	auto buttonBounds = topPanelBounds.removeFromLeft(componentWidth);
+	randomizeParametersButton1.setBounds(buttonBounds.removeFromTop(buttonBounds.getHeight() / 2.f));
+	randomizeParametersButton2.setBounds(buttonBounds);
+
+	presetComponent.setBounds(topPanelBounds.removeFromLeft(componentWidth));
 	algorithmComponent.setBounds(topPanelBounds);
 
 	auto componentHeight = bounds.getHeight() / 4.f;

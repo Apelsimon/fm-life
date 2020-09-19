@@ -28,8 +28,8 @@ PresetComponent::PresetComponent(juce::AudioProcessorValueTreeState& parameters)
 		juce::String presetStr{ BinaryData::namedResourceList[i] };
 		presetList.addItem(presetStr.dropLastCharacters(4), i + 1);
 	}
-	//presetList.setSelectedId(1);
 	presetList.onChange = [this]() { selectPreset(); };
+	presetList.setTextWhenNothingSelected("Presets");
 
 	saveButton.setButtonText("Save");
 	saveButton.onClick = [this]() { savePreset(); };
