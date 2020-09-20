@@ -28,13 +28,14 @@ private:
 	void selectPreset();
 	void savePreset();
 	void loadPreset();
-	void activatePreset(juce::XmlDocument& xmlDocument);
+	bool activatePreset(juce::XmlElement& xmlDocument);
 
 	juce::AudioProcessorValueTreeState& parameters;
 	juce::ComboBox   presetList;
 	juce::TextButton saveButton;
 	juce::TextButton loadButton;
 	juce::File       saveAndLoadFileLocation;
+	std::vector<std::unique_ptr<juce::XmlElement>> loadedPresets;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PresetComponent)
 };

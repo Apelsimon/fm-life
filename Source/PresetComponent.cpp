@@ -17,7 +17,8 @@ PresetComponent::PresetComponent(juce::AudioProcessorValueTreeState& parameters)
 	presetList(),
 	saveButton(),
 	loadButton(),
-	saveAndLoadFileLocation(juce::File::getSpecialLocation(juce::File::userDocumentsDirectory))
+	saveAndLoadFileLocation(juce::File::getSpecialLocation(juce::File::userDocumentsDirectory)),
+	loadedPresets()
 {
 	addAndMakeVisible(presetList);
 	addAndMakeVisible(saveButton);
@@ -60,10 +61,18 @@ void PresetComponent::selectPreset()
 {
 	auto presetId = presetList.getSelectedId();
 
-	int presetDataSize;
-	juce::String presetDataString{ BinaryData::getNamedResource(BinaryData::namedResourceList[presetId - 1], presetDataSize) };
-	juce::XmlDocument preset{ presetDataString };
-	activatePreset(preset);
+	if (presetId <= BinaryData::namedResourceListSize)
+	{
+		int presetDataSize;
+		juce::String presetDataString{ BinaryData::getNamedResource(BinaryData::namedResourceList[presetId - 1], presetDataSize) };
+		auto preset = juce::XmlDocument{ presetDataString }.getDocumentElement();
+		activatePreset(*preset);
+	}
+	else
+	{
+		presetId -= BinaryData::namedResourceListSize + 1;
+		activatePreset(*loadedPresets[presetId]);
+	}
 }
 
 void PresetComponent::savePreset()
@@ -84,16 +93,25 @@ void PresetComponent::loadPreset()
 	juce::FileChooser fileChooser{ "Load preset", saveAndLoadFileLocation , "*.xml" };
 	if (fileChooser.browseForFileToOpen())
 	{
-		juce::XmlDocument preset{ fileChooser.getResult() };
-		activatePreset(preset);
+		auto result = fileChooser.getResult();
+		saveAndLoadFileLocation = result.getParentDirectory();
+		auto preset = juce::XmlDocument{ result }.getDocumentElement();
+		if (activatePreset(*preset))
+		{
+			loadedPresets.push_back(std::move(preset));
+			auto itemId = presetList.getNumItems() + 1;
+			presetList.addItem(result.getFileName().dropLastCharacters(4), itemId);
+			presetList.setSelectedId(itemId);
+		}
 	}
 }
 
-void PresetComponent::activatePreset(juce::XmlDocument& xmlDocument)
+bool PresetComponent::activatePreset(juce::XmlElement& xml)
 {
-	auto presetXml = xmlDocument.getDocumentElement();
-	if (presetXml && presetXml->hasTagName(parameters.state.getType()))
+	if (xml.hasTagName(parameters.state.getType()))
 	{
-		parameters.replaceState(juce::ValueTree::fromXml(*presetXml));
+		parameters.replaceState(juce::ValueTree::fromXml(xml));
+		return true;
 	}
+	return false;
 }
