@@ -12,6 +12,15 @@ public:
 	{
 		constexpr auto StrokeThickness = 2.5f;
 
+		if (isHighlighted)
+		{
+			fillHighlightedOrTickedRect(g, area, findColour(juce::ComboBox::backgroundColourId).darker());
+		}
+		if (isTicked)
+		{
+			fillHighlightedOrTickedRect(g, area, findColour(juce::ComboBox::backgroundColourId).brighter());
+		}
+
 		g.setColour(juce::Colours::wheat);
 		
 		juce::Path wavePath;
@@ -65,6 +74,12 @@ public:
 	}
 
 private:
-
+	void fillHighlightedOrTickedRect(juce::Graphics& g, const juce::Rectangle< int > &area, juce::Colour colour)
+	{
+		auto a = area;
+		a.reduce(1, 0);
+		g.setColour(colour);
+		g.fillRect(a);
+	}
 };
 
