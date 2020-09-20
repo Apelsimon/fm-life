@@ -20,6 +20,9 @@ namespace BinaryData
     extern const char*   honking_keychain_xml;
     const int            honking_keychain_xmlSize = 1580;
 
+    extern const char*   off_to_space_xml;
+    const int            off_to_space_xmlSize = 1651;
+
     extern const char*   shit_xml;
     const int            shit_xmlSize = 1643;
 
@@ -27,7 +30,7 @@ namespace BinaryData
     const int            wow_organ_xmlSize = 1579;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 6;
+    const int namedResourceListSize = 7;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

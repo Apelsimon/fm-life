@@ -163,8 +163,47 @@ static const unsigned char temp_binary_data_3[] =
 
 const char* honking_keychain_xml = (const char*) temp_binary_data_3;
 
-//================== shit.xml ==================
+//================== off_to_space.xml ==================
 static const unsigned char temp_binary_data_4[] =
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
+"\r\n"
+"<FmLifeParameters>\r\n"
+"  <PARAM id=\"AlgorithmChoicesId\" value=\"4.0\"/>\r\n"
+"  <PARAM id=\"Operator1AttackId\" value=\"594.0\"/>\r\n"
+"  <PARAM id=\"Operator1DecayId\" value=\"1745.0\"/>\r\n"
+"  <PARAM id=\"Operator1FeedbackId\" value=\"0.8899999856948853\"/>\r\n"
+"  <PARAM id=\"Operator1RatioId\" value=\"6.0\"/>\r\n"
+"  <PARAM id=\"Operator1ReleaseId\" value=\"1397.0\"/>\r\n"
+"  <PARAM id=\"Operator1SustainId\" value=\"417.0\"/>\r\n"
+"  <PARAM id=\"Operator1WaveTypeChoicesId\" value=\"0.0\"/>\r\n"
+"  <PARAM id=\"Operator2AttackId\" value=\"3494.0\"/>\r\n"
+"  <PARAM id=\"Operator2DecayId\" value=\"535.0\"/>\r\n"
+"  <PARAM id=\"Operator2FeedbackId\" value=\"0.3599999845027924\"/>\r\n"
+"  <PARAM id=\"Operator2RatioId\" value=\"1.0\"/>\r\n"
+"  <PARAM id=\"Operator2ReleaseId\" value=\"3803.0\"/>\r\n"
+"  <PARAM id=\"Operator2SustainId\" value=\"625.0\"/>\r\n"
+"  <PARAM id=\"Operator2WaveTypeChoicesId\" value=\"0.0\"/>\r\n"
+"  <PARAM id=\"Operator3AttackId\" value=\"1648.0\"/>\r\n"
+"  <PARAM id=\"Operator3DecayId\" value=\"1934.0\"/>\r\n"
+"  <PARAM id=\"Operator3FeedbackId\" value=\"0.3700000047683716\"/>\r\n"
+"  <PARAM id=\"Operator3RatioId\" value=\"9.0\"/>\r\n"
+"  <PARAM id=\"Operator3ReleaseId\" value=\"3440.0\"/>\r\n"
+"  <PARAM id=\"Operator3SustainId\" value=\"626.0\"/>\r\n"
+"  <PARAM id=\"Operator3WaveTypeChoicesId\" value=\"0.0\"/>\r\n"
+"  <PARAM id=\"Operator4AttackId\" value=\"2247.0\"/>\r\n"
+"  <PARAM id=\"Operator4DecayId\" value=\"4770.0\"/>\r\n"
+"  <PARAM id=\"Operator4FeedbackId\" value=\"0.09999999403953552\"/>\r\n"
+"  <PARAM id=\"Operator4RatioId\" value=\"5.0\"/>\r\n"
+"  <PARAM id=\"Operator4ReleaseId\" value=\"3516.0\"/>\r\n"
+"  <PARAM id=\"Operator4SustainId\" value=\"707.0\"/>\r\n"
+"  <PARAM id=\"Operator4WaveTypeChoicesId\" value=\"0.0\"/>\r\n"
+"  <PARAM id=\"RandomizeParameterButtonsId\" value=\"0.0\"/>\r\n"
+"</FmLifeParameters>\r\n";
+
+const char* off_to_space_xml = (const char*) temp_binary_data_4;
+
+//================== shit.xml ==================
+static const unsigned char temp_binary_data_5[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
 "\r\n"
 "<FmLifeParameters>\r\n"
@@ -200,10 +239,10 @@ static const unsigned char temp_binary_data_4[] =
 "  <PARAM id=\"RandomizeParameterButtonsId\" value=\"0.0\"/>\r\n"
 "</FmLifeParameters>\r\n";
 
-const char* shit_xml = (const char*) temp_binary_data_4;
+const char* shit_xml = (const char*) temp_binary_data_5;
 
 //================== wow_organ.xml ==================
-static const unsigned char temp_binary_data_5[] =
+static const unsigned char temp_binary_data_6[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
 "\r\n"
 "<FmLifeParameters>\r\n"
@@ -239,7 +278,7 @@ static const unsigned char temp_binary_data_5[] =
 "  <PARAM id=\"RandomizeParameterButtonsId\" value=\"0.0\"/>\r\n"
 "</FmLifeParameters>\r\n";
 
-const char* wow_organ_xml = (const char*) temp_binary_data_5;
+const char* wow_organ_xml = (const char*) temp_binary_data_6;
 
 
 const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
@@ -256,6 +295,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
         case 0xe5f9cd19:  numBytes = 1580; return default_xml;
         case 0xbf881b4c:  numBytes = 1580; return distorted_trumpet_xml;
         case 0xb30c485b:  numBytes = 1580; return honking_keychain_xml;
+        case 0x96bcb16a:  numBytes = 1651; return off_to_space_xml;
         case 0xe16bb998:  numBytes = 1643; return shit_xml;
         case 0x92d3ed49:  numBytes = 1579; return wow_organ_xml;
         default: break;
@@ -271,6 +311,7 @@ const char* namedResourceList[] =
     "default_xml",
     "distorted_trumpet_xml",
     "honking_keychain_xml",
+    "off_to_space_xml",
     "shit_xml",
     "wow_organ_xml"
 };
@@ -281,6 +322,7 @@ const char* originalFilenames[] =
     "default.xml",
     "distorted_trumpet.xml",
     "honking_keychain.xml",
+    "off_to_space.xml",
     "shit.xml",
     "wow_organ.xml"
 };

@@ -13,6 +13,8 @@
             file="Builds/VisualStudio2017/x64/Release/Standalone Plugin/distorted_trumpet.xml"/>
       <FILE id="JEIYPV" name="honking_keychain.xml" compile="0" resource="1"
             file="Builds/VisualStudio2017/honking_keychain.xml"/>
+      <FILE id="prUTQy" name="off_to_space.xml" compile="0" resource="1"
+            file="C:/Users/Apelsimon/Documents/fm-life-presets/off_to_space.xml"/>
       <FILE id="upHAuB" name="shit.xml" compile="0" resource="1" file="Builds/VisualStudio2017/x64/Release/Standalone Plugin/shit.xml"/>
       <FILE id="ugkwGg" name="wow_organ.xml" compile="0" resource="1" file="Builds/VisualStudio2017/x64/Release/Standalone Plugin/wow_organ.xml"/>
     </GROUP>
