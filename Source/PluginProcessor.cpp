@@ -191,11 +191,20 @@ void FmlifeAudioProcessor::setStateInformation (const void* data, int sizeInByte
 
 void addOperatorFloatParametersToLayout(juce::AudioProcessorValueTreeState::ParameterLayout& parameterLayout, const ParameterConfig::Id::OperatorParamIds& paramIds, const ParameterConfig::Values::OperatorParamValues& paramValues)
 {
-	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.ratioId, "RatioParam", paramValues.ratio.min, paramValues.ratio.max, paramValues.ratio.def));
-	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.attckId, "AttackParam", paramValues.attack.min, paramValues.attack.max, paramValues.attack.def));
-	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.decayId, "DecayParam", paramValues.decay.min, paramValues.decay.max, paramValues.decay.def));
-	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.sustainId, "SustainParam", paramValues.sustain.min, paramValues.sustain.max, paramValues.sustain.def));
-	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.releaseId, "ReleaseParam", paramValues.release.min, paramValues.release.max, paramValues.release.def));
+	auto ratioStringFromValue = [](float value, int maximumStringLength) { return juce::String{ value, 2 }; };
+	auto adsrStringFromValue = [](float value, int maximumStringLength) { return juce::String{ value, 0 }; };
+
+	// TODO: put normalisable range in ParameterConfig
+	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.ratioId, "RatioParam", juce::NormalisableRange<float>{paramValues.ratio.min, paramValues.ratio.max, 0.01f, 1.f}, paramValues.ratio.def, juce::String{},
+		juce::AudioProcessorParameter::genericParameter, ratioStringFromValue));
+	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.attckId, "AttackParam", juce::NormalisableRange<float>{paramValues.attack.min, paramValues.attack.max, 1.f, 1.f}, paramValues.attack.def, juce::String{},
+		juce::AudioProcessorParameter::genericParameter, adsrStringFromValue));
+	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.decayId, "DecayParam", juce::NormalisableRange<float>{paramValues.decay.min, paramValues.decay.max, 1.f, 1.f}, paramValues.decay.def, juce::String{},
+		juce::AudioProcessorParameter::genericParameter, adsrStringFromValue));
+	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.sustainId, "SustainParam", juce::NormalisableRange<float>{paramValues.sustain.min, paramValues.sustain.max, 1.f, 1.f}, paramValues.sustain.def, juce::String{},
+		juce::AudioProcessorParameter::genericParameter, adsrStringFromValue));
+	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.releaseId, "ReleaseParam", juce::NormalisableRange<float>{paramValues.release.min, paramValues.release.max, 1.f, 1.f}, paramValues.release.def, juce::String{},
+		juce::AudioProcessorParameter::genericParameter, adsrStringFromValue));
 	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.feedbackId, "FeedbackParam", paramValues.feedback.min, paramValues.feedback.max, paramValues.feedback.def));
 }
 

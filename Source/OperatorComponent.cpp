@@ -111,5 +111,5 @@ void OperatorComponent::initAndPublishSlider(juce::Slider& slider, const juce::S
 	addAndMakeVisible(slider);
 	slider.setTextValueSuffix(suffix);
 	slider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-	slider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 100.f, 20.f);
+	slider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 75.f, 20.f);
 }
