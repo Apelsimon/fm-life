@@ -15,7 +15,6 @@ namespace jos
 		Operator(std::function<void()> envelopeDoneCb);
 
 		void prepare(const juce::dsp::ProcessSpec& spec);
-		void renderNextBlock(juce::AudioSampleBuffer& outputBuffer, int startSample, int numSamples);
 		float processSample();
 		void setFrequency(float freq);
 		void setPhaseMod(float fmod) { phaseMod = juce::jmap(fmod, -1.f, 1.f, -juce::MathConstants<float>::pi, juce::MathConstants<float>::pi); }
@@ -32,12 +31,6 @@ namespace jos
 		void setWaveType(ParameterConfig::Values::WaveType type) { waveType = type; }
 
 	private:
-
-		enum
-		{
-			OscIndex,
-			EnvIndex
-		};
 
 		struct Envelope : public juce::ADSR
 		{
@@ -72,9 +65,8 @@ namespace jos
 		float phaseMod;
 		float ratio;
 		float outputLevel;
-		juce::dsp::ProcessorChain<juce::dsp::Oscillator<float>, Envelope> processorChain;
-		juce::HeapBlock<char> heapBlock;
-		juce::dsp::AudioBlock<float> tempBlock;
+		juce::dsp::Oscillator<float> osc;
+		Envelope envelope;
 		std::function<void()> onInactiveEnvelope;
 		ParameterConfig::Values::WaveType waveType;
 	};

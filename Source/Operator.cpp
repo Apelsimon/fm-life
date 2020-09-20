@@ -3,9 +3,8 @@
 namespace jos
 {
 
-Operator::Operator(std::function<void()> envelopeDoneCb) : carrierFrequency(0.f), phaseMod(0.f), ratio(0.f), outputLevel(0.f), processorChain(), heapBlock(), tempBlock(), onInactiveEnvelope(envelopeDoneCb)
+Operator::Operator(std::function<void()> envelopeDoneCb) : carrierFrequency(0.f), phaseMod(0.f), ratio(0.f), outputLevel(0.f), osc(), envelope(), onInactiveEnvelope(envelopeDoneCb)
 {
-	auto& osc = processorChain.get<OscIndex>();
 	osc.initialise([this](float input) { 
 
 		auto phase = input + 4.f * phaseMod;
@@ -40,41 +39,24 @@ Operator::Operator(std::function<void()> envelopeDoneCb) : carrierFrequency(0.f)
 
 void Operator::prepare(const juce::dsp::ProcessSpec& spec)
 {
-	tempBlock = juce::dsp::AudioBlock<float>{ heapBlock, spec.numChannels, spec.maximumBlockSize };
-	processorChain.prepare(spec);
-}
-
-void Operator::renderNextBlock(juce::AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
-{
-	auto& adsr = processorChain.get<EnvIndex>();
-
-	if (adsr.isActive())
-	{
-		auto block = tempBlock.getSubBlock(0, (size_t)numSamples);
-		block.clear();
-		juce::dsp::ProcessContextReplacing<float> context(block);
-		processorChain.process(context);
-
-		juce::dsp::AudioBlock<float>(outputBuffer)
-			.getSubBlock((size_t)startSample, (size_t)numSamples)
-			.add(tempBlock);
-
-		if (!adsr.isActive()) onInactiveEnvelope();
-	}
+	osc.prepare(spec);
+	envelope.prepare(spec);
 }
 
 float Operator::processSample()
 {
-	auto& adsr = processorChain.get<EnvIndex>();
-	auto& osc = processorChain.get<OscIndex>();
-
 	auto out = 0.f;
 
-	if (adsr.isActive())
+	if (envelope.isActive())
 	{
-		out = outputLevel * osc.processSample(0.f) * adsr.getNextSample();
+		out = outputLevel * osc.processSample(0.f) * envelope.getNextSample();
 
-		if (!adsr.isActive()) onInactiveEnvelope();
+		if (!envelope.isActive())
+		{
+			envelope.reset();
+			if(onInactiveEnvelope) onInactiveEnvelope();
+		}
+			
 	}
 
 	return out;
@@ -82,27 +64,23 @@ float Operator::processSample()
 
 void Operator::setFrequency(float freq)
 {
-	auto& osc = processorChain.get<OscIndex>();
 	carrierFrequency = freq;
 	osc.setFrequency(carrierFrequency * ratio, true);
 }
 
 void Operator::start()
 {
-	auto& adsr = processorChain.get<EnvIndex>();
-	adsr.noteOn();
+	envelope.noteOn();
 }
 
 void Operator::stop()
 {
-	auto& adsr = processorChain.get<EnvIndex>();
-	adsr.noteOff();
+	envelope.noteOff();
 }
 
 void Operator::reset()
 {
-	auto& adsr = processorChain.get<EnvIndex>();
-	adsr.reset();
+	envelope.reset();
 }
 
 void Operator::setEnvelopeParameter(Envelope& envelope, juce::ADSR::Parameters& params, float& paramToChange, float newValue)
@@ -118,36 +96,32 @@ void Operator::setAttack(float attack)
 {
 	attack = attack / 1000.f;
 
-	auto& adsr = processorChain.get<EnvIndex>();
-	auto params = adsr.getParameters();
-	setEnvelopeParameter(adsr, params, params.attack, attack);
+	auto params = envelope.getParameters();
+	setEnvelopeParameter(envelope, params, params.attack, attack);
 }
 
 void Operator::setDecay(float decay)
 {
 	decay = decay / 1000.f;
 
-	auto& adsr = processorChain.get<EnvIndex>();
-	auto params = adsr.getParameters();
-	setEnvelopeParameter(adsr, params, params.decay, decay);
+	auto params = envelope.getParameters();
+	setEnvelopeParameter(envelope, params, params.decay, decay);
 }
 
 void Operator::setSustain(float sustain)
 {
 	sustain = sustain / 1000.f;
 
-	auto& adsr = processorChain.get<EnvIndex>();
-	auto params = adsr.getParameters();
-	setEnvelopeParameter(adsr, params, params.sustain, sustain);
+	auto params = envelope.getParameters();
+	setEnvelopeParameter(envelope, params, params.sustain, sustain);
 }
 
 void Operator::setRelease(float release)
 {
 	release = release / 1000.f;
 
-	auto& adsr = processorChain.get<EnvIndex>();
-	auto params = adsr.getParameters();
-	setEnvelopeParameter(adsr, params, params.release, release);
+	auto params = envelope.getParameters();
+	setEnvelopeParameter(envelope, params, params.release, release);
 }
 
 }
