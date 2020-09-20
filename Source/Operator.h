@@ -28,6 +28,7 @@ namespace jos
 		void setDecay(float decay);
 		void setSustain(float sustain);
 		void setRelease(float release);
+		void setOutputLevel(float level) { outputLevel = level; }
 		void setWaveType(ParameterConfig::Values::WaveType type) { waveType = type; }
 
 	private:
@@ -70,6 +71,7 @@ namespace jos
 		float carrierFrequency;
 		float phaseMod;
 		float ratio;
+		float outputLevel;
 		juce::dsp::ProcessorChain<juce::dsp::Oscillator<float>, Envelope> processorChain;
 		juce::HeapBlock<char> heapBlock;
 		juce::dsp::AudioBlock<float> tempBlock;

@@ -205,6 +205,7 @@ void addOperatorFloatParametersToLayout(juce::AudioProcessorValueTreeState::Para
 		juce::AudioProcessorParameter::genericParameter, adsrStringFromValue));
 	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.releaseId, "ReleaseParam", juce::NormalisableRange<float>{paramValues.release.min, paramValues.release.max, 1.f, 1.f}, paramValues.release.def, juce::String{},
 		juce::AudioProcessorParameter::genericParameter, adsrStringFromValue));
+	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.outputId, "Output", paramValues.output.min, paramValues.output.max, paramValues.output.def));
 	parameterLayout.add(std::make_unique<juce::AudioParameterFloat>(paramIds.feedbackId, "FeedbackParam", paramValues.feedback.min, paramValues.feedback.max, paramValues.feedback.def));
 }
 

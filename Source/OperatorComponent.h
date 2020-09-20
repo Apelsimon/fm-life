@@ -28,6 +28,7 @@ private:
 	jos::SliderAttachment decayAttachment;
 	jos::SliderAttachment sustainAttachment;
 	jos::SliderAttachment releaseAttachment;
+	jos::SliderAttachment outputAttachment;
 	jos::SliderAttachment feedbackAttachment;
 	
 	WaveTypeComboBoxLookAndFeel waveTypeComboBoxLookAndFeel;

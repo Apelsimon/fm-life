@@ -107,6 +107,7 @@ void Voice::initOperatorParameters(jos::Operator& op, juce::AudioProcessorValueT
 	op.setDecay(*parameters.getRawParameterValue(paramIds.decayId));
 	op.setSustain(*parameters.getRawParameterValue(paramIds.sustainId));
 	op.setRelease(*parameters.getRawParameterValue(paramIds.releaseId));
+	op.setOutputLevel(*parameters.getRawParameterValue(paramIds.outputId));
 	op.setWaveType(static_cast<ParameterConfig::Values::WaveType>(static_cast<int>(*parameters.getRawParameterValue(paramIds.wavetypeChoicesId))));
 }
 
@@ -117,6 +118,7 @@ void Voice::registerOperatorCallbacks(jos::ParameterListener& paramListener, con
 	paramListener.registerCallback(paramIds.decayId, [&op](float newValue) { DBG("SET DECAY FOR OP: " << (int)&op); op.setDecay(newValue); });
 	paramListener.registerCallback(paramIds.sustainId, [&op](float newValue) { DBG("SET SUSTAIN FOR OP: " << (int)&op); op.setSustain(newValue); });
 	paramListener.registerCallback(paramIds.releaseId, [&op](float newValue) { DBG("SET RELEASE FOR OP: " << (int)&op); op.setRelease(newValue); });
+	paramListener.registerCallback(paramIds.outputId, [&op](float newValue) { DBG("SET output FOR OP: " << (int)&op); op.setOutputLevel(newValue); });
 	paramListener.registerCallback(paramIds.wavetypeChoicesId, [&op](float newValue) { DBG("SET Wave type FOR OP: " << newValue); op.setWaveType(static_cast<ParameterConfig::Values::WaveType>(static_cast<int>(newValue))); });
 }
 

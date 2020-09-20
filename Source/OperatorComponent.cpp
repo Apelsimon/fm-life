@@ -24,6 +24,7 @@ OperatorComponent::OperatorComponent(juce::AudioProcessorValueTreeState& paramet
     decayAttachment(parameters, paramIds.decayId),
 	sustainAttachment(parameters, paramIds.sustainId),
 	releaseAttachment(parameters, paramIds.releaseId),
+	outputAttachment(parameters, paramIds.outputId),
 	feedbackAttachment(parameters, paramIds.feedbackId),
 	waveTypeComboBoxLookAndFeel(),
 	waveTypeAttachment(parameters, paramIds.wavetypeChoicesId)
@@ -34,6 +35,7 @@ OperatorComponent::OperatorComponent(juce::AudioProcessorValueTreeState& paramet
 	initAndPublishSlider(decayAttachment(), " decay");
 	initAndPublishSlider(sustainAttachment(), " sustain");
 	initAndPublishSlider(releaseAttachment(), " release");
+	initAndPublishSlider(outputAttachment(), " level");
 
 	if (paramIds.ratioId == ParameterConfig::Id::Operator4.ratioId)
 	{
@@ -67,7 +69,7 @@ void OperatorComponent::resized()
 	constexpr auto Padding = 10.f;
 
 	auto bounds = getLocalBounds().reduced(Padding);
-	const auto childComponentWidth = bounds.getWidth() / 7.f;
+	const auto childComponentWidth = bounds.getWidth() / 8.f;
 
 	auto labelAndWaveTypeBounds = bounds.removeFromLeft(childComponentWidth);
 	operatorLabel.setBounds(labelAndWaveTypeBounds.removeFromTop(labelAndWaveTypeBounds.getHeight() / 2.f));
@@ -77,6 +79,7 @@ void OperatorComponent::resized()
 	decayAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
 	sustainAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
 	releaseAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
+	outputAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
 	feedbackAttachment().setBounds(bounds.removeFromLeft(childComponentWidth));
 }
 

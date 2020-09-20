@@ -14,6 +14,7 @@ namespace Id
 		juce::String decayId;
 		juce::String sustainId;
 		juce::String releaseId;
+		juce::String outputId;
 		juce::String feedbackId;
 		juce::String wavetypeChoicesId;
 	};
@@ -24,6 +25,7 @@ namespace Id
 		"Operator1DecayId",
 		"Operator1SustainId",
 		"Operator1ReleaseId",
+		"Operator1OutputId",
 		"Operator1FeedbackId",
 		"Operator1WaveTypeChoicesId"
 	};
@@ -33,6 +35,7 @@ namespace Id
 		"Operator2DecayId",
 		"Operator2SustainId",
 		"Operator2ReleaseId",
+		"Operator2OutputId",
 		"Operator2FeedbackId",
 		"Operator2WaveTypeChoicesId"
 	};
@@ -42,6 +45,7 @@ namespace Id
 		"Operator3DecayId",
 		"Operator3SustainId",
 		"Operator3ReleaseId",
+		"Operator3OutputId",
 		"Operator3FeedbackId",
 		"Operator3WaveTypeChoicesId"
 	};
@@ -51,6 +55,7 @@ namespace Id
 		"Operator4DecayId",
 		"Operator4SustainId",
 		"Operator4ReleaseId",
+		"Operator4OutputId",
 		"Operator4FeedbackId",
 		"Operator4WaveTypeChoicesId"
 	};
@@ -76,6 +81,7 @@ namespace Values
 		ValueLimits<float> decay;
 		ValueLimits<float> sustain;
 		ValueLimits<float> release;
+		ValueLimits<float> output;
 		ValueLimits<float> feedback;
 	};
 
@@ -85,6 +91,7 @@ namespace Values
 		{ 0.f, 5000.f, 100.f },
 		{ 0.f, 1000.f, 707.f },
 		{ 0.f, 10000.f, 100.f },
+		{ 0.f, 0.99f, 0.75f },
 		{ 0.f, 1.f, 0.f }
 	};
 

@@ -3,7 +3,7 @@
 namespace jos
 {
 
-Operator::Operator(std::function<void()> envelopeDoneCb) : carrierFrequency(0.f), phaseMod(0.f), ratio(0.f), processorChain(), heapBlock(), tempBlock(), onInactiveEnvelope(envelopeDoneCb)
+Operator::Operator(std::function<void()> envelopeDoneCb) : carrierFrequency(0.f), phaseMod(0.f), ratio(0.f), outputLevel(0.f), processorChain(), heapBlock(), tempBlock(), onInactiveEnvelope(envelopeDoneCb)
 {
 	auto& osc = processorChain.get<OscIndex>();
 	osc.initialise([this](float input) { 
@@ -72,7 +72,7 @@ float Operator::processSample()
 
 	if (adsr.isActive())
 	{
-		out = osc.processSample(0.f) * adsr.getNextSample();
+		out = outputLevel * osc.processSample(0.f) * adsr.getNextSample();
 
 		if (!adsr.isActive()) onInactiveEnvelope();
 	}
