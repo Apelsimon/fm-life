@@ -7,7 +7,7 @@
 namespace BinaryData
 {
 
-//================== broken_organ.xml ==================
+//================== broken organ.xml ==================
 static const unsigned char temp_binary_data_0[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
 "\r\n"
@@ -85,7 +85,7 @@ static const unsigned char temp_binary_data_1[] =
 
 const char* default_xml = (const char*) temp_binary_data_1;
 
-//================== distorted_trumpet.xml ==================
+//================== distorted trumpet.xml ==================
 static const unsigned char temp_binary_data_2[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
 "\r\n"
@@ -124,7 +124,7 @@ static const unsigned char temp_binary_data_2[] =
 
 const char* distorted_trumpet_xml = (const char*) temp_binary_data_2;
 
-//================== honking_keychain.xml ==================
+//================== honking keychain.xml ==================
 static const unsigned char temp_binary_data_3[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
 "\r\n"
@@ -163,7 +163,7 @@ static const unsigned char temp_binary_data_3[] =
 
 const char* honking_keychain_xml = (const char*) temp_binary_data_3;
 
-//================== off_to_space.xml ==================
+//================== off to space.xml ==================
 static const unsigned char temp_binary_data_4[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
 "\r\n"
@@ -241,7 +241,7 @@ static const unsigned char temp_binary_data_5[] =
 
 const char* shit_xml = (const char*) temp_binary_data_5;
 
-//================== wow_organ.xml ==================
+//================== wow organ.xml ==================
 static const unsigned char temp_binary_data_6[] =
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
 "\r\n"
@@ -318,13 +318,13 @@ const char* namedResourceList[] =
 
 const char* originalFilenames[] =
 {
-    "broken_organ.xml",
+    "broken organ.xml",
     "default.xml",
-    "distorted_trumpet.xml",
-    "honking_keychain.xml",
-    "off_to_space.xml",
+    "distorted trumpet.xml",
+    "honking keychain.xml",
+    "off to space.xml",
     "shit.xml",
-    "wow_organ.xml"
+    "wow organ.xml"
 };
 
 const char* getNamedResourceOriginalFilename (const char* resourceNameUTF8)

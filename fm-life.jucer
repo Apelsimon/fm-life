@@ -5,18 +5,18 @@
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               pluginManufacturer="jos" bundleIdentifier="com.jos.fm-life" cppLanguageStandard="17">
   <MAINGROUP id="jBcwdV" name="fm-life">
-    <GROUP id="{828285B2-E05E-20E4-014D-5CF826137539}" name="Presets">
-      <FILE id="wItHAO" name="broken_organ.xml" compile="0" resource="1"
-            file="Builds/VisualStudio2017/x64/Release/Standalone Plugin/broken_organ.xml"/>
-      <FILE id="nJjSCP" name="default.xml" compile="0" resource="1" file="Builds/VisualStudio2017/default.xml"/>
-      <FILE id="pKtxjA" name="distorted_trumpet.xml" compile="0" resource="1"
-            file="Builds/VisualStudio2017/x64/Release/Standalone Plugin/distorted_trumpet.xml"/>
-      <FILE id="JEIYPV" name="honking_keychain.xml" compile="0" resource="1"
-            file="Builds/VisualStudio2017/honking_keychain.xml"/>
-      <FILE id="prUTQy" name="off_to_space.xml" compile="0" resource="1"
-            file="C:/Users/Apelsimon/Documents/fm-life-presets/off_to_space.xml"/>
-      <FILE id="upHAuB" name="shit.xml" compile="0" resource="1" file="Builds/VisualStudio2017/x64/Release/Standalone Plugin/shit.xml"/>
-      <FILE id="ugkwGg" name="wow_organ.xml" compile="0" resource="1" file="Builds/VisualStudio2017/x64/Release/Standalone Plugin/wow_organ.xml"/>
+    <GROUP id="{E0A24DD4-7A66-E5BF-C680-B5D928251241}" name="Presets">
+      <FILE id="dGao5C" name="broken organ.xml" compile="0" resource="1"
+            file="Presets/broken organ.xml"/>
+      <FILE id="RKwrQ8" name="default.xml" compile="0" resource="1" file="Presets/default.xml"/>
+      <FILE id="AirTbg" name="distorted trumpet.xml" compile="0" resource="1"
+            file="Presets/distorted trumpet.xml"/>
+      <FILE id="N7MpP6" name="honking keychain.xml" compile="0" resource="1"
+            file="Presets/honking keychain.xml"/>
+      <FILE id="y1fRB1" name="off to space.xml" compile="0" resource="1"
+            file="Presets/off to space.xml"/>
+      <FILE id="NT1RaO" name="shit.xml" compile="0" resource="1" file="Presets/shit.xml"/>
+      <FILE id="r0bnPa" name="wow organ.xml" compile="0" resource="1" file="Presets/wow organ.xml"/>
     </GROUP>
     <GROUP id="{45590EB6-94D2-B1F3-8A12-924FAA5FA6A7}" name="Source">
       <FILE id="zmBEGk" name="PluginProcessor.cpp" compile="1" resource="0"

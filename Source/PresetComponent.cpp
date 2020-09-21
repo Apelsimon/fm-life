@@ -26,7 +26,7 @@ PresetComponent::PresetComponent(juce::AudioProcessorValueTreeState& parameters)
 
 	for (auto i = 0; i < BinaryData::namedResourceListSize; ++i)
 	{
-		juce::String presetStr{ BinaryData::namedResourceList[i] };
+		juce::String presetStr{ BinaryData::originalFilenames[i] };
 		presetList.addItem(presetStr.dropLastCharacters(4), i + 1);
 	}
 	presetList.onChange = [this]() { selectPreset(); };

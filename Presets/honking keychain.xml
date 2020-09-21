@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FmLifeParameters>
+  <PARAM id="AlgorithmChoicesId" value="5.0"/>
+  <PARAM id="Operator1AttackId" value="100.0"/>
+  <PARAM id="Operator1DecayId" value="100.0"/>
+  <PARAM id="Operator1FeedbackId" value="0.0"/>
+  <PARAM id="Operator1RatioId" value="4.0"/>
+  <PARAM id="Operator1ReleaseId" value="100.0"/>
+  <PARAM id="Operator1SustainId" value="707.0"/>
+  <PARAM id="Operator1WaveTypeChoicesId" value="1.0"/>
+  <PARAM id="Operator2AttackId" value="100.0"/>
+  <PARAM id="Operator2DecayId" value="100.0"/>
+  <PARAM id="Operator2FeedbackId" value="0.0"/>
+  <PARAM id="Operator2RatioId" value="2.0"/>
+  <PARAM id="Operator2ReleaseId" value="100.0"/>
+  <PARAM id="Operator2SustainId" value="707.0"/>
+  <PARAM id="Operator2WaveTypeChoicesId" value="1.0"/>
+  <PARAM id="Operator3AttackId" value="100.0"/>
+  <PARAM id="Operator3DecayId" value="100.0"/>
+  <PARAM id="Operator3FeedbackId" value="0.0"/>
+  <PARAM id="Operator3RatioId" value="1.0"/>
+  <PARAM id="Operator3ReleaseId" value="100.0"/>
+  <PARAM id="Operator3SustainId" value="707.0"/>
+  <PARAM id="Operator3WaveTypeChoicesId" value="1.0"/>
+  <PARAM id="Operator4AttackId" value="100.0"/>
+  <PARAM id="Operator4DecayId" value="100.0"/>
+  <PARAM id="Operator4FeedbackId" value="0.0"/>
+  <PARAM id="Operator4RatioId" value="7.0"/>
+  <PARAM id="Operator4ReleaseId" value="100.0"/>
+  <PARAM id="Operator4SustainId" value="707.0"/>
+  <PARAM id="Operator4WaveTypeChoicesId" value="3.0"/>
+  <PARAM id="RandomizeParameterButtonsId" value="0.0"/>
+</FmLifeParameters>
